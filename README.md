@@ -28,21 +28,66 @@ Streamlined single-agent processing with context isolation:
 
 ## 🚀 **Quick Start - Agent System**
 
-### 1. Desktop App (Easiest)
-```bash
-# Double-click: Islamic Text Dashboard.app (on Desktop)
-# Or with options:
-open "/Users/farieds/Desktop/Islamic Text Dashboard.app" --args debug --verbose
-```
+### Development Environment Options
 
-### 2. Command Line
-```bash
-cd ./agent-reservoir-workflow/production/orchestration/
-npm run dev
-# Dashboard: http://localhost:4000/monitor/
-```
+#### Option 1: Local Development
+1. **Desktop App (Easiest)**
+   ```bash
+   # Double-click: Islamic Text Dashboard.app (on Desktop)
+   # Or with options:
+   open "/Users/farieds/Desktop/Islamic Text Dashboard.app" --args debug --verbose
+   ```
 
-### 3. Workflow Control Modes
+2. **Command Line**
+   ```bash
+   cd ./agent-reservoir-workflow/production/orchestration/
+   npm run dev
+   # Dashboard: http://localhost:4000/monitor/
+   ```
+
+#### Option 2: Dev Container (Recommended for Development)
+1. **Prerequisites**
+   - VS Code with [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+   - Docker Desktop
+
+2. **Open in Dev Container**
+   ```bash
+   # Single project container
+   cd islamic-text-workflow
+   code .
+   # Click "Reopen in Container" when prompted
+   
+   # Or multi-project workspace (recommended)
+   cd /Users/farieds
+   code islamic-projects-workspace.code-workspace
+   ```
+
+3. **Dev Container Features**
+   - **Complete Stack**: Python 3.11, Node.js 18, Neo4j, Graphiti, MCP servers
+   - **Knowledge Graph**: Pre-configured Neo4j (7474, 7687) and Graphiti API (8000)
+   - **MCP Integration**: Graphiti MCP server (8001) for agent communication
+   - **Database Access**: PostgreSQL client for Supabase integration
+   - **Agent Environment**: All dependencies for Islamic research agents
+   - **VS Code Extensions**: Debugging, Docker, SQL tools, Neo4j support
+
+4. **Dev Container Workflow**
+   ```bash
+   # Inside dev container
+   cd /workspace
+   
+   # Start knowledge graph services
+   docker-compose up -d neo4j graphiti-api mcp-server
+   
+   # Run agents with knowledge graph integration
+   cd claude-docker-model
+   docker-compose -f docker-compose.graphiti-integration.yml up -d
+   
+   # Monitor via dashboard
+   cd agent-reservoir-workflow/production/orchestration
+   npm run dev
+   ```
+
+### Workflow Control Modes
 - **Standard**: All 5 agents, batch size 5
 - **Fast**: Essential agents, batch size 10  
 - **Thorough**: All agents, batch size 2
