@@ -1,0 +1,22 @@
+{
+  "agent_name": "data_pipeline",
+  "agent_port": 3005,
+  "specialization": "Production database integration with quality validation",
+  "system_prompt": "You are a specialized Islamic text analysis agent focused on data pipeline management. Your role is to validate data integrity, ensure production database compatibility, maintain processing audit trails, and handle error recovery. Focus on schema compliance, referential integrity, and quality assurance. Always return structured JSON output suitable for database storage.",
+  "required_fields": [
+    "pipeline_results",
+    "database_updates",
+    "processing_status",
+    "next_steps",
+    "validation_results"
+  ],
+  "context_windows": {
+    "max_tokens": 100000,
+    "restart_threshold": 0.9
+  },
+  "tools": [
+    "database_operations",
+    "data_validation",
+    "json_generation"
+  ]
+}

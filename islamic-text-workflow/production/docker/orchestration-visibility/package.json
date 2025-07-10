@@ -1,0 +1,18 @@
+{
+  "name": "agent-pipeline-monitor",
+  "version": "1.0.0",
+  "description": "Real-time monitoring dashboard for Islamic text processing agents",
+  "main": "orchestrator.js",
+  "scripts": {
+    "dev": "node orchestrator.js",
+    "dev-open": "node orchestrator.js & sleep 3 && open http://localhost:4000/monitor",
+    "start": "node orchestrator.js",
+    "monitor": "open http://localhost:4000/monitor"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "@supabase/supabase-js": "^2.39.0"
+  },
+  "author": "Islamic Text Processing Team",
+  "license": "MIT"
+}

@@ -1,0 +1,172 @@
+{
+  "name": "Stage 1: Hybrid Academic Analysis Agent",
+  "description": "Hybrid Academic Analysis Agent - Performs comprehensive academic analysis using Academic-Analysis-Prompt-V4-Hybrid.md methodology",
+  "scheduling": {
+    "type": "interval",
+    "interval": 1,
+    "intervalType": "minutes"
+  },
+  "flow": [
+    {
+      "id": 1,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "mapper": {},
+      "metadata": {
+        "designer": { "x": 0, "y": 0 },
+        "interface": []
+      },
+      "parameters": {
+        "method": "GET",
+        "url": "{{config.supabase.url}}/rest/v1/books",
+        "headers": [
+          {
+            "name": "Authorization", 
+            "value": "Bearer {{config.supabase.serviceKey}}"
+          },
+          {
+            "name": "apikey",
+            "value": "{{config.supabase.serviceKey}}"
+          }
+        ],
+        "qs": [
+          {
+            "name": "select",
+            "value": "id,title,author_name"
+          },
+          {
+            "name": "title_alias",
+            "value": "is.null"
+          },
+          {
+            "name": "processing_agent",
+            "value": "is.null"
+          },
+          {
+            "name": "limit",
+            "value": "3"
+          }
+        ],
+        "parseResponse": true,
+        "shareCookies": false,
+        "rejectUnauthorized": true,
+        "followRedirect": true,
+        "useQuerystring": false,
+        "gzip": true,
+        "bodyType": "",
+        "timeout": ""
+      }
+    },
+    {
+      "id": 2,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "mapper": {
+        "condition": "{{length(1.data) > 0}}"
+      },
+      "metadata": {
+        "designer": { "x": 300, "y": 0 }
+      }
+    },
+    {
+      "id": 3,
+      "module": "builtin:ArrayIterator",
+      "version": 1,
+      "mapper": {
+        "array": "{{1.data}}"
+      },
+      "metadata": {
+        "designer": { "x": 600, "y": 0 }
+      }
+    },
+    {
+      "id": 4,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "mapper": {
+        "body": "{\"book_id\": \"{{3.id}}\", \"title\": \"{{3.title}}\", \"author\": \"{{3.author_name}}\", \"stage\": \"hybrid_analysis\", \"agent_role\": \"Expert academic researcher and information architect specializing in Islamic and comparative religious studies\", \"task\": \"Perform comprehensive hybrid academic analysis using Academic-Analysis-Prompt-V4-Hybrid.md methodology. CRITICAL METHODOLOGY COMPLIANCE REQUIREMENTS: 1) MANDATORY WebSearch first to verify book content - must set websearch_performed=true, document research_sources, verify book_content_verified=true, skip if no reliable information found. 2) Four Primary Elements REQUIRED: genre_classification, methodological_foundation, scholarly_perspective, core_argumentative_thesis - must set four_elements_requirement_met=true. 3) Network Description must address ALL four elements with relational connections - set network_description_requirement_met=true. 4) Structural Flowchart with extreme_specificity: logical_organization with visual_hierarchy, scriptural_verses_referenced, historical_events_referenced, key_figures_referenced, key_terminology_arabic (italicized), concrete_examples with realistic_citations - set structural_flowchart_requirement_met=true and extreme_specificity_requirement_met=true. 5) File creation in academic-analyses folder with proper naming convention - set file_creation_requirement_met=true, analysis_file_generated=true. Quality gates: analysis_quality_score >= 7, methodology_compliance_gate_passed=true, ready_for_stage2=true.\"}"
+      },
+      "metadata": {
+        "designer": { "x": 900, "y": 0 },
+        "interface": []
+      },
+      "parameters": {
+        "method": "POST",
+        "url": "{{config.claudeDesktop.publicUrl}}/claude/hybrid-analysis",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "bodyType": "raw",
+        "parseResponse": true,
+        "shareCookies": false,
+        "rejectUnauthorized": true,
+        "followRedirect": true,
+        "useQuerystring": false,
+        "gzip": true,
+        "timeout": "60"
+      }
+    },
+    {
+      "id": 5,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "mapper": {
+        "body": "{\"book_id\": \"{{3.id}}\", \"input_title\": \"{{3.title}}\", \"input_author_name\": \"{{3.author_name}}\", \"input_book_uuid\": \"{{3.id}}\", \"input_processing_timestamp\": \"{{now}}\", \"hybrid_analysis_full_text\": \"{{4.data.hybrid_analysis_full_text}}\", \"agent_full_response\": {{4.data.agent_full_response}}, \"agent_response_tokens\": {{4.data.agent_response_tokens}}, \"central_node\": \"{{4.data.central_node}}\", \"genre_classification\": \"{{4.data.genre_classification}}\", \"methodological_foundation\": \"{{4.data.methodological_foundation}}\", \"scholarly_perspective\": \"{{4.data.scholarly_perspective}}\", \"core_argumentative_thesis\": \"{{4.data.core_argumentative_thesis}}\", \"primary_concepts_complete\": {{4.data.primary_concepts_complete}}, \"secondary_supporting_concepts\": {{4.data.secondary_supporting_concepts}}, \"secondary_concepts_count\": {{4.data.secondary_concepts_count}}, \"network_description\": \"{{4.data.network_description}}\", \"network_description_addresses_all_four\": {{4.data.network_description_addresses_all_four}}, \"relational_connections_explained\": {{4.data.relational_connections_explained}}, \"logical_organization\": {{4.data.logical_organization}}, \"logical_organization_type\": \"{{4.data.logical_organization_type}}\", \"visual_hierarchy\": {{4.data.visual_hierarchy}}, \"main_topics_to_subtopics_flow\": {{4.data.main_topics_to_subtopics_flow}}, \"extreme_specificity_details\": {{4.data.extreme_specificity_details}}, \"specific_concepts_count\": {{4.data.specific_concepts_count}}, \"scriptural_verses_referenced\": {{4.data.scriptural_verses_referenced}}, \"historical_events_referenced\": {{4.data.historical_events_referenced}}, \"key_figures_referenced\": {{4.data.key_figures_referenced}}, \"key_terminology_arabic\": {{4.data.key_terminology_arabic}}, \"arabic_terms_properly_italicized\": {{4.data.arabic_terms_properly_italicized}}, \"technical_terms_count\": {{4.data.technical_terms_count}}, \"anticipatory_structure_notes\": \"{{4.data.anticipatory_structure_notes}}\", \"includes_introduction\": {{4.data.includes_introduction}}, \"includes_conclusion\": {{4.data.includes_conclusion}}, \"addresses_counter_arguments\": {{4.data.addresses_counter_arguments}}, \"includes_misconceptions_section\": {{4.data.includes_misconceptions_section}}, \"concrete_examples\": {{4.data.concrete_examples}}, \"realistic_citations_included\": {{4.data.realistic_citations_included}}, \"sample_entries_provided\": {{4.data.sample_entries_provided}}, \"concrete_examples_count\": {{4.data.concrete_examples_count}}, \"websearch_performed\": {{4.data.websearch_performed}}, \"websearch_research_notes\": \"{{4.data.websearch_research_notes}}\", \"book_content_verified\": {{4.data.book_content_verified}}, \"reliable_information_found\": {{4.data.reliable_information_found}}, \"skip_if_no_information\": {{4.data.skip_if_no_information}}, \"skip_reason\": \"{{4.data.skip_reason}}\", \"proceeded_with_guesswork\": {{4.data.proceeded_with_guesswork}}, \"research_sources\": {{4.data.research_sources}}, \"research_confidence\": {{4.data.research_confidence}}, \"verification_notes\": \"{{4.data.verification_notes}}\", \"follows_example_structure\": {{4.data.follows_example_structure}}, \"analytical_rigor_matches_v3\": {{4.data.analytical_rigor_matches_v3}}, \"hybrid_approach_advantages_demonstrated\": {{4.data.hybrid_approach_advantages_demonstrated}}, \"extreme_specificity_achieved\": {{4.data.extreme_specificity_achieved}}, \"perfect_adherence_to_structure\": {{4.data.perfect_adherence_to_structure}}, \"explicit_coverage_all_four\": {{4.data.explicit_coverage_all_four}}, \"scholarly_depth_demonstrated\": {{4.data.scholarly_depth_demonstrated}}, \"analysis_file_path\": \"{{4.data.analysis_file_path}}\", \"analysis_file_generated\": {{4.data.analysis_file_generated}}, \"analysis_file_size_bytes\": {{4.data.analysis_file_size_bytes}}, \"file_structure_compliant\": {{4.data.file_structure_compliant}}, \"file_naming_convention_followed\": {{4.data.file_naming_convention_followed}}, \"stage2_input_data_prepared\": {{4.data.stage2_input_data_prepared}}, \"central_node_for_enrichment\": \"{{4.data.central_node_for_enrichment}}\", \"primary_concepts_for_enrichment\": {{4.data.primary_concepts_for_enrichment}}, \"key_evidence_for_enrichment\": {{4.data.key_evidence_for_enrichment}}, \"authors_core_project\": \"{{4.data.authors_core_project}}\", \"verified_title\": \"{{4.data.verified_title}}\", \"verified_author\": \"{{4.data.verified_author}}\", \"author_biographical_info\": \"{{4.data.author_biographical_info}}\", \"subject_category\": \"{{4.data.subject_category}}\", \"theological_school\": \"{{4.data.theological_school}}\", \"historical_period\": \"{{4.data.historical_period}}\", \"target_audience\": \"{{4.data.target_audience}}\", \"complexity_level\": \"{{4.data.complexity_level}}\", \"core_themes\": {{4.data.core_themes}}, \"theological_positions\": {{4.data.theological_positions}}, \"arguments_presented\": {{4.data.arguments_presented}}, \"key_concepts\": {{4.data.key_concepts}}, \"related_works\": {{4.data.related_works}}, \"cited_sources\": {{4.data.cited_sources}}, \"influences\": {{4.data.influences}}, \"prompt_methodology_compliance_score\": {{4.data.prompt_methodology_compliance_score}}, \"websearch_requirement_met\": {{4.data.websearch_requirement_met}}, \"four_elements_requirement_met\": {{4.data.four_elements_requirement_met}}, \"network_description_requirement_met\": {{4.data.network_description_requirement_met}}, \"structural_flowchart_requirement_met\": {{4.data.structural_flowchart_requirement_met}}, \"extreme_specificity_requirement_met\": {{4.data.extreme_specificity_requirement_met}}, \"file_creation_requirement_met\": {{4.data.file_creation_requirement_met}}, \"analysis_quality_score\": {{4.data.analysis_quality_score}}, \"quality_gate_passed\": {{4.data.quality_gate_passed}}, \"methodology_compliance_gate_passed\": {{4.data.methodology_compliance_gate_passed}}, \"ready_for_stage2\": {{4.data.ready_for_stage2}}, \"stage_status\": \"{{if(and(and(4.data.analysis_quality_score >= 7; 4.data.methodology_compliance_gate_passed); 4.data.ready_for_stage2); \"completed\"; \"manual_review\")}}\", \"processing_time_minutes\": {{4.data.processing_time_minutes}}, \"error_message\": \"{{4.data.error_message}}\", \"retry_count\": {{4.data.retry_count}}, \"processing_warnings\": {{4.data.processing_warnings}}, \"processed_by\": \"hybrid_analysis_agent\", \"claude_agent_version\": \"{{4.data.claude_agent_version}}\", \"prompt_version\": \"{{4.data.prompt_version}}\", \"processing_node\": \"{{4.data.processing_node}}\"}"
+      },
+      "metadata": {
+        "designer": { "x": 1200, "y": 0 },
+        "interface": []
+      },
+      "parameters": {
+        "method": "POST",
+        "url": "{{config.supabase.url}}/rest/v1/book_analysis_results",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{config.supabase.serviceKey}}"
+          },
+          {
+            "name": "apikey", 
+            "value": "{{config.supabase.serviceKey}}"
+          },
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Prefer",
+            "value": "return=minimal"
+          }
+        ],
+        "bodyType": "raw",
+        "parseResponse": true,
+        "shareCookies": false,
+        "rejectUnauthorized": true,
+        "followRedirect": true,
+        "useQuerystring": false,
+        "gzip": true,
+        "timeout": ""
+      }
+    }
+  ],
+  "metadata": {
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false,
+      "freshVariables": false
+    },
+    "designer": {
+      "orphans": []
+    }
+  }
+}

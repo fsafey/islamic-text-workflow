@@ -1,0 +1,821 @@
+{
+    "name": "Importing books Claude Test",
+    "flow": [],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": [
+                [
+                    {
+                        "id": 31,
+                        "module": "supabase:searchRows",
+                        "version": 1,
+                        "metadata": {
+                            "designer": {
+                                "x": 542,
+                                "y": -13,
+                                "messages": [
+                                    {
+                                        "category": "link",
+                                        "severity": "warning",
+                                        "message": "The module is not connected to the data flow."
+                                    },
+                                    {
+                                        "category": "setupreq",
+                                        "severity": "error",
+                                        "message": "The module is not set up."
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "id": 30,
+                        "module": "util:FunctionSleep",
+                        "version": 1,
+                        "parameters": {},
+                        "mapper": {
+                            "duration": "1"
+                        },
+                        "metadata": {
+                            "designer": {
+                                "x": 900,
+                                "y": 0
+                            },
+                            "restore": {},
+                            "expect": [
+                                {
+                                    "name": "duration",
+                                    "type": "uinteger",
+                                    "label": "Delay",
+                                    "required": true,
+                                    "validate": {
+                                        "max": 300,
+                                        "min": 1
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": 3,
+                        "module": "open-router:createAChatCompletion",
+                        "version": 1,
+                        "parameters": {
+                            "__IMTCONN__": 2601892
+                        },
+                        "mapper": {
+                            "n": "1",
+                            "model": "anthropic/claude-3.7-sonnet",
+                            "top_p": "1",
+                            "fallback": true,
+                            "messages": [
+                                {
+                                    "role": "assistant",
+                                    "content": "Analyze the Islamic book titled \"{{2.value}}\" by {{12.value}} and provide information in JSON format with these exact keys. Return only pure JSON without any markdown formatting, code block markers, or additional text:  \n  \n{  \n  \"title_ar\": \"Arabic title\",  \n  \"author_ar\": \"Author name in Arabic\",  \n  \"publication_year\": \"Year as number only\",  \n  \"publisher_en\": \"Publisher name in English\",  \n  \"publisher_ar\": \"Publisher name in Arabic\",  \n  \"content_overview\": \"Detailed description of content and significance\",  \n  \"content_type\": \"MUST BE EXACTLY ONE OF: primary, commentary, analysis, reference\",  \n  \"difficulty_level\": \"MUST BE EXACTLY ONE OF: beginner, intermediate, advanced\",  \n  \"audience_type\": \"MUST BE EXACTLY ONE OF: student, scholar, researcher\"  \n}  \n  \nImportant guidelines:  \n1. Focus on Shia Islamic resources and interpretations  \n2. If a book title exists in both Shia and Sunni traditions, prioritize the Shia version  \n3. For content_type, difficulty_level, and audience_type, use ONLY the exact values listed - do not create new categories  \n4. Base difficulty level on prerequisite knowledge required  \n5. Determine audience type based on content complexity and specialized terminology  \n6. do not include any single quotes like '. example: instead of the Prophet Muhammad's, write the Prophet Muhammads. instead of Ma'arif, write Maarif. \n"
+                                }
+                            ],
+                            "json_mode": false,
+                            "temperature": "1"
+                        },
+                        "metadata": {
+                            "designer": {
+                                "x": 1200,
+                                "y": -6,
+                                "name": "Get General Info",
+                                "messages": [
+                                    {
+                                        "category": "reference",
+                                        "severity": "error",
+                                        "message": "Module references non-existing module '12'."
+                                    },
+                                    {
+                                        "category": "reference",
+                                        "severity": "warning",
+                                        "message": "Referenced module 'Flow Control - Iterator' [2] is not accessible."
+                                    }
+                                ]
+                            },
+                            "restore": {
+                                "expect": {
+                                    "stop": {
+                                        "mode": "chose"
+                                    },
+                                    "model": {
+                                        "mode": "chose",
+                                        "label": "Anthropic: Claude 3.7 Sonnet"
+                                    },
+                                    "fallback": {
+                                        "mode": "chose"
+                                    },
+                                    "messages": {
+                                        "mode": "chose",
+                                        "items": [
+                                            {
+                                                "role": {
+                                                    "mode": "chose",
+                                                    "label": "Assistant"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "json_mode": {
+                                        "mode": "chose"
+                                    }
+                                },
+                                "parameters": {
+                                    "__IMTCONN__": {
+                                        "data": {
+                                            "scoped": "true",
+                                            "connection": "open-router-4ur2vj"
+                                        },
+                                        "label": "Apr 7 IMAM"
+                                    }
+                                }
+                            },
+                            "parameters": [
+                                {
+                                    "name": "__IMTCONN__",
+                                    "type": "account:open-router-4ur2vj",
+                                    "label": "Connection",
+                                    "required": true
+                                }
+                            ],
+                            "expect": [
+                                {
+                                    "name": "messages",
+                                    "spec": [
+                                        {
+                                            "name": "content",
+                                            "type": "text",
+                                            "label": "Content",
+                                            "required": true
+                                        },
+                                        {
+                                            "name": "role",
+                                            "type": "select",
+                                            "label": "Role",
+                                            "options": [
+                                                {
+                                                    "label": "User",
+                                                    "value": "user"
+                                                },
+                                                {
+                                                    "label": "Assistant",
+                                                    "value": "assistant"
+                                                },
+                                                {
+                                                    "label": "System",
+                                                    "value": "system"
+                                                }
+                                            ],
+                                            "required": true
+                                        }
+                                    ],
+                                    "type": "array",
+                                    "label": "Messages",
+                                    "required": true
+                                },
+                                {
+                                    "name": "model",
+                                    "type": "select",
+                                    "label": "Model",
+                                    "required": true
+                                },
+                                {
+                                    "name": "fallback",
+                                    "type": "boolean",
+                                    "label": "Enable automatic Fallback?"
+                                },
+                                {
+                                    "name": "json_mode",
+                                    "type": "boolean",
+                                    "label": "Enable JSON Mode?"
+                                },
+                                {
+                                    "name": "max_tokens",
+                                    "type": "integer",
+                                    "label": "Max Tokens"
+                                },
+                                {
+                                    "name": "n",
+                                    "type": "integer",
+                                    "label": "Number of Choices",
+                                    "validate": {
+                                        "min": 1
+                                    }
+                                },
+                                {
+                                    "name": "temperature",
+                                    "type": "number",
+                                    "label": "Temperature",
+                                    "validate": {
+                                        "max": 2,
+                                        "min": 0
+                                    }
+                                },
+                                {
+                                    "name": "top_p",
+                                    "type": "number",
+                                    "label": "Top P",
+                                    "validate": {
+                                        "max": 1,
+                                        "min": 0
+                                    }
+                                },
+                                {
+                                    "name": "frequency_penalty",
+                                    "type": "number",
+                                    "label": "Frequency Penalty",
+                                    "validate": {
+                                        "max": 2,
+                                        "min": -2
+                                    }
+                                },
+                                {
+                                    "name": "presence_penalty",
+                                    "type": "number",
+                                    "label": "Presence Penalty",
+                                    "validate": {
+                                        "min": 1
+                                    }
+                                },
+                                {
+                                    "name": "seed",
+                                    "type": "integer",
+                                    "label": "Seed"
+                                },
+                                {
+                                    "name": "stop",
+                                    "spec": {
+                                        "name": "value",
+                                        "type": "text"
+                                    },
+                                    "type": "array",
+                                    "label": "Stop Sequences"
+                                },
+                                {
+                                    "name": "top_k",
+                                    "type": "number",
+                                    "label": "Top k"
+                                },
+                                {
+                                    "name": "messages",
+                                    "spec": [
+                                        {
+                                            "name": "content",
+                                            "type": "text",
+                                            "label": "Content",
+                                            "required": true
+                                        },
+                                        {
+                                            "name": "role",
+                                            "type": "select",
+                                            "label": "Role",
+                                            "options": [
+                                                {
+                                                    "label": "User",
+                                                    "value": "user"
+                                                },
+                                                {
+                                                    "label": "Assistant",
+                                                    "value": "assistant"
+                                                },
+                                                {
+                                                    "label": "System",
+                                                    "value": "system"
+                                                }
+                                            ],
+                                            "required": true
+                                        }
+                                    ],
+                                    "type": "array",
+                                    "label": "Messages",
+                                    "required": true
+                                },
+                                {
+                                    "name": "model",
+                                    "type": "select",
+                                    "label": "Model",
+                                    "required": true
+                                },
+                                {
+                                    "name": "fallback",
+                                    "type": "boolean",
+                                    "label": "Enable automatic Fallback?"
+                                },
+                                {
+                                    "name": "json_mode",
+                                    "type": "boolean",
+                                    "label": "Enable JSON Mode?"
+                                },
+                                {
+                                    "name": "max_tokens",
+                                    "type": "integer",
+                                    "label": "Max Tokens"
+                                },
+                                {
+                                    "name": "n",
+                                    "type": "integer",
+                                    "label": "Number of Choices",
+                                    "validate": {
+                                        "min": 1
+                                    }
+                                },
+                                {
+                                    "name": "temperature",
+                                    "type": "number",
+                                    "label": "Temperature",
+                                    "validate": {
+                                        "max": 2,
+                                        "min": 0
+                                    }
+                                },
+                                {
+                                    "name": "top_p",
+                                    "type": "number",
+                                    "label": "Top P",
+                                    "validate": {
+                                        "max": 1,
+                                        "min": 0
+                                    }
+                                },
+                                {
+                                    "name": "frequency_penalty",
+                                    "type": "number",
+                                    "label": "Frequency Penalty",
+                                    "validate": {
+                                        "max": 2,
+                                        "min": -2
+                                    }
+                                },
+                                {
+                                    "name": "presence_penalty",
+                                    "type": "number",
+                                    "label": "Presence Penalty",
+                                    "validate": {
+                                        "min": 1
+                                    }
+                                },
+                                {
+                                    "name": "seed",
+                                    "type": "integer",
+                                    "label": "Seed"
+                                },
+                                {
+                                    "name": "stop",
+                                    "spec": {
+                                        "name": "value",
+                                        "type": "text"
+                                    },
+                                    "type": "array",
+                                    "label": "Stop Sequences"
+                                },
+                                {
+                                    "name": "top_k",
+                                    "type": "number",
+                                    "label": "Top k"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": 18,
+                        "module": "json:ParseJSON",
+                        "version": 1,
+                        "parameters": {
+                            "type": ""
+                        },
+                        "mapper": {
+                            "json": "{{3.choices[].message.content}}"
+                        },
+                        "metadata": {
+                            "designer": {
+                                "x": 1500,
+                                "y": 0,
+                                "name": "Parse General Info"
+                            },
+                            "restore": {
+                                "parameters": {
+                                    "type": {
+                                        "label": "Choose a data structure"
+                                    }
+                                }
+                            },
+                            "parameters": [
+                                {
+                                    "name": "type",
+                                    "type": "udt",
+                                    "label": "Data structure"
+                                }
+                            ],
+                            "expect": [
+                                {
+                                    "name": "json",
+                                    "type": "text",
+                                    "label": "JSON string",
+                                    "required": true
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": 19,
+                        "module": "open-router:createAChatCompletion",
+                        "version": 1,
+                        "parameters": {
+                            "__IMTCONN__": 2601892
+                        },
+                        "mapper": {
+                            "n": "1",
+                            "model": "anthropic/claude-3.7-sonnet",
+                            "top_p": "1",
+                            "fallback": true,
+                            "messages": [
+                                {
+                                    "role": "assistant",
+                                    "content": "Using your information and the information provided here: {{18.content_overview}} about the Islamic book titled \"{{2.value}}\" by {{12.value}}, provide the following details in JSON format only without any markdown formatting, code block markers, or additional text:  :  \n  \n{  \n  \"historical_period\": \"EXACTLY ONE OF: pre-1000, 1000-1500, 1500-1900, post-1900\",  \n  \"description_en\": \"1-2 sentence concise description of the book's content and significance\",  \n  \"description_ar\": \"1-2 sentence concise description in Arabic\",  \n  \"meta_tags\": [\"5-7 SEO keywords related to the book's topics, related subjects, and potential search terms\"]  \n}  \n  \nGuidelines:  \n1. Historical period should be based on when the book was written or the author's lifetime  \n2.Descriptions should be reader-friendly, accurate, and highlight the book's importance  \n3. Focus on Shia Islamic perspective and terminology  \n4. do not include any single quotes like '. example: instead of the Prophet Muhammad's, write the Prophet Muhammads. instead of Ma'arif, write Maarif. \n"
+                                }
+                            ],
+                            "json_mode": false,
+                            "temperature": "1"
+                        },
+                        "metadata": {
+                            "designer": {
+                                "x": 1800,
+                                "y": 0,
+                                "name": "Hist,desc,meta tags",
+                                "messages": [
+                                    {
+                                        "category": "reference",
+                                        "severity": "error",
+                                        "message": "Module references non-existing module '12'."
+                                    },
+                                    {
+                                        "category": "reference",
+                                        "severity": "warning",
+                                        "message": "Referenced module 'Flow Control - Iterator' [2] is not accessible."
+                                    }
+                                ]
+                            },
+                            "restore": {
+                                "expect": {
+                                    "stop": {
+                                        "mode": "chose"
+                                    },
+                                    "model": {
+                                        "mode": "chose",
+                                        "label": "Anthropic: Claude 3.7 Sonnet"
+                                    },
+                                    "fallback": {
+                                        "mode": "chose"
+                                    },
+                                    "messages": {
+                                        "mode": "chose",
+                                        "items": [
+                                            {
+                                                "role": {
+                                                    "mode": "chose",
+                                                    "label": "Assistant"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "json_mode": {
+                                        "mode": "chose"
+                                    }
+                                },
+                                "parameters": {
+                                    "__IMTCONN__": {
+                                        "data": {
+                                            "scoped": "true",
+                                            "connection": "open-router-4ur2vj"
+                                        },
+                                        "label": "Apr 7 IMAM"
+                                    }
+                                }
+                            },
+                            "parameters": [
+                                {
+                                    "name": "__IMTCONN__",
+                                    "type": "account:open-router-4ur2vj",
+                                    "label": "Connection",
+                                    "required": true
+                                }
+                            ],
+                            "expect": [
+                                {
+                                    "name": "messages",
+                                    "spec": [
+                                        {
+                                            "name": "content",
+                                            "type": "text",
+                                            "label": "Content",
+                                            "required": true
+                                        },
+                                        {
+                                            "name": "role",
+                                            "type": "select",
+                                            "label": "Role",
+                                            "options": [
+                                                {
+                                                    "label": "User",
+                                                    "value": "user"
+                                                },
+                                                {
+                                                    "label": "Assistant",
+                                                    "value": "assistant"
+                                                },
+                                                {
+                                                    "label": "System",
+                                                    "value": "system"
+                                                }
+                                            ],
+                                            "required": true
+                                        }
+                                    ],
+                                    "type": "array",
+                                    "label": "Messages",
+                                    "required": true
+                                },
+                                {
+                                    "name": "model",
+                                    "type": "select",
+                                    "label": "Model",
+                                    "required": true
+                                },
+                                {
+                                    "name": "fallback",
+                                    "type": "boolean",
+                                    "label": "Enable automatic Fallback?"
+                                },
+                                {
+                                    "name": "json_mode",
+                                    "type": "boolean",
+                                    "label": "Enable JSON Mode?"
+                                },
+                                {
+                                    "name": "max_tokens",
+                                    "type": "integer",
+                                    "label": "Max Tokens"
+                                },
+                                {
+                                    "name": "n",
+                                    "type": "integer",
+                                    "label": "Number of Choices",
+                                    "validate": {
+                                        "min": 1
+                                    }
+                                },
+                                {
+                                    "name": "temperature",
+                                    "type": "number",
+                                    "label": "Temperature",
+                                    "validate": {
+                                        "max": 2,
+                                        "min": 0
+                                    }
+                                },
+                                {
+                                    "name": "top_p",
+                                    "type": "number",
+                                    "label": "Top P",
+                                    "validate": {
+                                        "max": 1,
+                                        "min": 0
+                                    }
+                                },
+                                {
+                                    "name": "frequency_penalty",
+                                    "type": "number",
+                                    "label": "Frequency Penalty",
+                                    "validate": {
+                                        "max": 2,
+                                        "min": -2
+                                    }
+                                },
+                                {
+                                    "name": "presence_penalty",
+                                    "type": "number",
+                                    "label": "Presence Penalty",
+                                    "validate": {
+                                        "min": 1
+                                    }
+                                },
+                                {
+                                    "name": "seed",
+                                    "type": "integer",
+                                    "label": "Seed"
+                                },
+                                {
+                                    "name": "stop",
+                                    "spec": {
+                                        "name": "value",
+                                        "type": "text"
+                                    },
+                                    "type": "array",
+                                    "label": "Stop Sequences"
+                                },
+                                {
+                                    "name": "top_k",
+                                    "type": "number",
+                                    "label": "Top k"
+                                },
+                                {
+                                    "name": "messages",
+                                    "spec": [
+                                        {
+                                            "name": "content",
+                                            "type": "text",
+                                            "label": "Content",
+                                            "required": true
+                                        },
+                                        {
+                                            "name": "role",
+                                            "type": "select",
+                                            "label": "Role",
+                                            "options": [
+                                                {
+                                                    "label": "User",
+                                                    "value": "user"
+                                                },
+                                                {
+                                                    "label": "Assistant",
+                                                    "value": "assistant"
+                                                },
+                                                {
+                                                    "label": "System",
+                                                    "value": "system"
+                                                }
+                                            ],
+                                            "required": true
+                                        }
+                                    ],
+                                    "type": "array",
+                                    "label": "Messages",
+                                    "required": true
+                                },
+                                {
+                                    "name": "model",
+                                    "type": "select",
+                                    "label": "Model",
+                                    "required": true
+                                },
+                                {
+                                    "name": "fallback",
+                                    "type": "boolean",
+                                    "label": "Enable automatic Fallback?"
+                                },
+                                {
+                                    "name": "json_mode",
+                                    "type": "boolean",
+                                    "label": "Enable JSON Mode?"
+                                },
+                                {
+                                    "name": "max_tokens",
+                                    "type": "integer",
+                                    "label": "Max Tokens"
+                                },
+                                {
+                                    "name": "n",
+                                    "type": "integer",
+                                    "label": "Number of Choices",
+                                    "validate": {
+                                        "min": 1
+                                    }
+                                },
+                                {
+                                    "name": "temperature",
+                                    "type": "number",
+                                    "label": "Temperature",
+                                    "validate": {
+                                        "max": 2,
+                                        "min": 0
+                                    }
+                                },
+                                {
+                                    "name": "top_p",
+                                    "type": "number",
+                                    "label": "Top P",
+                                    "validate": {
+                                        "max": 1,
+                                        "min": 0
+                                    }
+                                },
+                                {
+                                    "name": "frequency_penalty",
+                                    "type": "number",
+                                    "label": "Frequency Penalty",
+                                    "validate": {
+                                        "max": 2,
+                                        "min": -2
+                                    }
+                                },
+                                {
+                                    "name": "presence_penalty",
+                                    "type": "number",
+                                    "label": "Presence Penalty",
+                                    "validate": {
+                                        "min": 1
+                                    }
+                                },
+                                {
+                                    "name": "seed",
+                                    "type": "integer",
+                                    "label": "Seed"
+                                },
+                                {
+                                    "name": "stop",
+                                    "spec": {
+                                        "name": "value",
+                                        "type": "text"
+                                    },
+                                    "type": "array",
+                                    "label": "Stop Sequences"
+                                },
+                                {
+                                    "name": "top_k",
+                                    "type": "number",
+                                    "label": "Top k"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": 20,
+                        "module": "json:ParseJSON",
+                        "version": 1,
+                        "parameters": {
+                            "type": ""
+                        },
+                        "mapper": {
+                            "json": "{{19.choices[].message.content}}"
+                        },
+                        "metadata": {
+                            "designer": {
+                                "x": 2100,
+                                "y": 0,
+                                "name": "Parse Desc&Catg."
+                            },
+                            "restore": {
+                                "parameters": {
+                                    "type": {
+                                        "label": "Choose a data structure"
+                                    }
+                                }
+                            },
+                            "parameters": [
+                                {
+                                    "name": "type",
+                                    "type": "udt",
+                                    "label": "Data structure"
+                                }
+                            ],
+                            "expect": [
+                                {
+                                    "name": "json",
+                                    "type": "text",
+                                    "label": "JSON string",
+                                    "required": true
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": 32,
+                        "module": "supabase:upsertARecord",
+                        "version": 1,
+                        "metadata": {
+                            "designer": {
+                                "x": 2483,
+                                "y": 8,
+                                "messages": [
+                                    {
+                                        "category": "setupreq",
+                                        "severity": "error",
+                                        "message": "The module is not set up."
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            ]
+        },
+        "zone": "us2.make.com",
+        "notes": []
+    }
+}

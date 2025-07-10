@@ -1,0 +1,144 @@
+{
+  "test_book": {
+    "id": "5231a689-93f7-49f2-879b-4e916af61eca",
+    "title": "Al-Mar'a fi Nahj Al-Balagha",
+    "author_name": "Dr. Najwa Saleh Al-Jawad",
+    "description": "This scholarly work examines the status and rights of women in Islam through the lens of Imam Ali ibn Abi Talibs teachings in Nahj al-Balagha, analyzing how his perspectives on gender relations bridge classical Shia thought with contemporary feminist discourse.",
+    "expected_processing_time": {
+      "research": 30,
+      "analysis": 60,
+      "sql": 30,
+      "total": 120
+    }
+  },
+  "test_scenarios": [
+    {
+      "name": "Single Book Test",
+      "description": "Test complete pipeline with one book",
+      "books": ["5231a689-93f7-49f2-879b-4e916af61eca"],
+      "expected_duration": "2 minutes"
+    },
+    {
+      "name": "Small Batch Test",
+      "description": "Test pipeline with 3 books",
+      "books": [
+        "5231a689-93f7-49f2-879b-4e916af61eca",
+        "522a6200-114a-47d5-b0e9-747ff328e559",
+        "2b38d831-8ef2-4715-bd95-475abbdbc61c"
+      ],
+      "expected_duration": "5 minutes"
+    }
+  ],
+  "webhook_test_payloads": {
+    "research_complete": {
+      "task_id": "test-research-123",
+      "status": "completed",
+      "book_data": {
+        "id": "5231a689-93f7-49f2-879b-4e916af61eca",
+        "title": "Al-Mar'a fi Nahj Al-Balagha",
+        "author": "Dr. Najwa Saleh Al-Jawad"
+      },
+      "research_findings": {
+        "verified": true,
+        "context": "Test research context",
+        "related_works": ["Test work 1", "Test work 2"],
+        "scholarly_context": "Test academic context",
+        "research_quality": "high",
+        "sources_found": 3
+      },
+      "processing_time": 30,
+      "timestamp": "2025-07-04T12:00:00Z"
+    },
+    "analysis_complete": {
+      "task_id": "test-analysis-123",
+      "status": "completed",
+      "book_data": {
+        "id": "5231a689-93f7-49f2-879b-4e916af61eca",
+        "title": "Al-Mar'a fi Nahj Al-Balagha",
+        "author": "Dr. Najwa Saleh Al-Jawad"
+      },
+      "analysis": {
+        "conceptual_network": {
+          "central_node": "Test central concept",
+          "primary_concepts": [
+            {
+              "concept": "genre_classification",
+              "value": "Test genre"
+            }
+          ]
+        },
+        "structural_flowchart": "Test flowchart",
+        "academic_description": "Test description"
+      },
+      "file_path": "./test-analysis.md",
+      "processing_time": 60,
+      "timestamp": "2025-07-04T12:08:00Z"
+    },
+    "sql_complete": {
+      "task_id": "test-sql-123",
+      "status": "completed",
+      "book_data": {
+        "id": "5231a689-93f7-49f2-879b-4e916af61eca",
+        "title": "Al-Mar'a fi Nahj Al-Balagha",
+        "author": "Dr. Najwa Saleh Al-Jawad"
+      },
+      "sql_data": {
+        "title_alias": "Test Title; Test Alias",
+        "keywords": [
+          "Test Keyword 1",
+          "Test Keyword 2",
+          "Test Keyword 3"
+        ],
+        "description": "Test description for SQL update"
+      },
+      "sql_file": "./test-enrichment.sql",
+      "processing_time": 30,
+      "timestamp": "2025-07-04T12:10:00Z"
+    }
+  },
+  "agent_test_requests": {
+    "research": {
+      "task_id": "test-research-456",
+      "book_data": {
+        "id": "5231a689-93f7-49f2-879b-4e916af61eca",
+        "title": "Al-Mar'a fi Nahj Al-Balagha",
+        "author": "Dr. Najwa Saleh Al-Jawad"
+      },
+      "webhook_url": "https://hook.us2.make.com/da4d2186-449b-422b-85df-08701bb6d8eb"
+    },
+    "analysis": {
+      "task_id": "test-analysis-456",
+      "book_data": {
+        "id": "5231a689-93f7-49f2-879b-4e916af61eca",
+        "title": "Al-Mar'a fi Nahj Al-Balagha",
+        "author": "Dr. Najwa Saleh Al-Jawad"
+      },
+      "research_findings": {
+        "verified": true,
+        "context": "Test context",
+        "sources_found": 2
+      },
+      "webhook_url": "https://hook.us2.make.com/da4d2186-449b-422b-85df-08701bb6d8eb/analysis"
+    },
+    "sql": {
+      "task_id": "test-sql-456",
+      "book_data": {
+        "id": "5231a689-93f7-49f2-879b-4e916af61eca",
+        "title": "Al-Mar'a fi Nahj Al-Balagha",
+        "author": "Dr. Najwa Saleh Al-Jawad"
+      },
+      "analysis": {
+        "conceptual_network": {
+          "central_node": "Test concept"
+        },
+        "academic_description": "Test academic description"
+      },
+      "webhook_url": "https://hook.us2.make.com/da4d2186-449b-422b-85df-08701bb6d8eb/sql"
+    }
+  },
+  "monitoring_queries": {
+    "queue_status": "SELECT status, COUNT(*) FROM book_processing_queue GROUP BY status;",
+    "recent_tasks": "SELECT task_type, status, COUNT(*) FROM agent_task_logs WHERE created_at > NOW() - INTERVAL '1 hour' GROUP BY task_type, status;",
+    "webhook_health": "SELECT webhook_type, AVG(execution_time), COUNT(*) FROM webhook_execution_logs WHERE created_at > NOW() - INTERVAL '1 hour' GROUP BY webhook_type;"
+  }
+}

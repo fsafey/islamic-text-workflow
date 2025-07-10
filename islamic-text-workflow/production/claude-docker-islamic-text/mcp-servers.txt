@@ -1,0 +1,20 @@
+# MCP Server Configuration for Islamic Text Processing Agents
+# Based on claude-docker-model patterns for reliable MCP server installation
+
+# Filesystem access (essential for all agents)
+claude mcp add -s user filesystem -- npx -y @modelcontextprotocol/server-filesystem
+
+# Memory/knowledge base (for inter-agent communication)
+claude mcp add -s user memory -- npx -y @modelcontextprotocol/server-memory
+
+# Browser automation (for metadata research)
+claude mcp add -s user browser -- npx -y @modelcontextprotocol/server-browser
+
+# Context7 documentation lookup (for Islamic scholarship references)
+claude mcp add -s user context7 -- npx -y @modelcontextprotocol/server-context7
+
+# Twilio SMS notifications (optional - requires TWILIO_* env vars)
+claude mcp add-json twilio -s user '{"command":"npx","args":["-y","@modelcontextprotocol/server-twilio"],"env":{"TWILIO_ACCOUNT_SID":"${TWILIO_ACCOUNT_SID}","TWILIO_AUTH_TOKEN":"${TWILIO_AUTH_TOKEN}","TWILIO_FROM_NUMBER":"${TWILIO_FROM_NUMBER}","TWILIO_TO_NUMBER":"${TWILIO_TO_NUMBER}"}}'
+
+# GitHub integration (for version control of enriched data)
+claude mcp add-json github -s user '{"command":"npx","args":["-y","@modelcontextprotocol/server-github"],"env":{"GITHUB_TOKEN":"${GITHUB_TOKEN}"}}'

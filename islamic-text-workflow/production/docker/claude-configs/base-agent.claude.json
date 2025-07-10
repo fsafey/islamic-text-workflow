@@ -1,0 +1,55 @@
+{
+  "numStartups": 1,
+  "installMethod": "global",
+  "autoUpdates": false,
+  "tipsHistory": {},
+  "promptQueueUseCount": 0,
+  "autoUpdaterStatus": "disabled",
+  "userID": "34fdb7cd7aa60e7f4dd47bb684ba489c0a6bbab75cbfffa14c6792ae39ff4054",
+  "hasCompletedOnboarding": true,
+  "lastOnboardingVersion": "1.0.24",
+  "projects": {
+    "/app": {
+      "allowedTools": [
+        "Read",
+        "Edit", 
+        "Bash",
+        "Grep"
+      ],
+      "disallowedTools": [
+        "Write",
+        "NotebookRead",
+        "NotebookEdit",
+        "Task"
+      ],
+      "context": {
+        "agent_type": "islamic_text_processor",
+        "workflow_mode": "automated",
+        "session_persistence": true
+      },
+      "history": [],
+      "dontCrawlDirectory": true,
+      "enableArchitectTool": false,
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "approvedMcprcServers": [],
+      "rejectedMcprcServers": [],
+      "hasTrustDialogAccepted": true,
+      "hasCompletedProjectOnboarding": true,
+      "agentConfiguration": {
+        "headlessMode": true,
+        "sessionTimeout": 3600,
+        "tokenBudget": 100000,
+        "restartThreshold": 90000,
+        "contextCompression": true
+      }
+    }
+  },
+  "agentOptimizations": {
+    "interactiveMode": false,
+    "uiElements": false,
+    "promptQueue": false,
+    "autoComplete": false,
+    "keyboardShortcuts": false
+  }
+}

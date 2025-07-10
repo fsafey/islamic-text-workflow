@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="512" cy="512" r="512" fill="#1e3c72"/>
+  
+  <!-- V-shaped wings forming the VantageWorks logo -->
+  <path d="M200 750 L380 300 L512 600 L644 300 L824 750 L720 750 L600 450 L512 650 L424 450 L304 750 Z" fill="#FFFFFF"/>
+  
+  <!-- Center highlight V -->
+  <path d="M450 600 L512 480 L574 600 L540 600 L512 540 L484 600 Z" fill="#64B5F6"/>
+  
+  <!-- Bottom text indicator -->
+  <text x="512" y="900" text-anchor="middle" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="48" font-weight="bold">VANTAGE</text>
+</svg>

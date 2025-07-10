@@ -1,0 +1,69 @@
+{
+  "numStartups": 1,
+  "installMethod": "global",
+  "autoUpdates": false,
+  "tipsHistory": {},
+  "promptQueueUseCount": 0,
+  "autoUpdaterStatus": "disabled",
+  "userID": "34fdb7cd7aa60e7f4dd47bb684ba489c0a6bbab75cbfffa14c6792ae39ff4054",
+  "hasCompletedOnboarding": true,
+  "lastOnboardingVersion": "1.0.24",
+  "projects": {
+    "/app": {
+      "allowedTools": [
+        "Read",
+        "Edit", 
+        "Bash"
+      ],
+      "disallowedTools": [
+        "Write",
+        "NotebookRead",
+        "NotebookEdit",
+        "Task",
+        "WebFetch",
+        "Grep"
+      ],
+      "context": {
+        "agent_type": "content_synthesizer",
+        "specialization": "islamic_library_catalog_synthesis",
+        "workflow_mode": "automated",
+        "session_persistence": false,
+        "synthesis_focus": [
+          "combined_analysis",
+          "categorization",
+          "keyword_extraction",
+          "description_generation",
+          "quality_assessment",
+          "catalog_formatting"
+        ]
+      },
+      "history": [],
+      "dontCrawlDirectory": true,
+      "enableArchitectTool": false,
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "approvedMcprcServers": [],
+      "rejectedMcprcServers": [],
+      "hasTrustDialogAccepted": true,
+      "hasCompletedProjectOnboarding": true,
+      "agentConfiguration": {
+        "headlessMode": true,
+        "sessionTimeout": 1800,
+        "tokenBudget": 75000,
+        "restartThreshold": 65000,
+        "contextCompression": false,
+        "systemPromptTemplate": "You are an Enhanced Content Synthesizer Agent specializing in Islamic library catalog synthesis. Mission: Transform research from multiple agents into production-ready catalog fields. Synthesize flowchart analysis, network mappings, and metadata research into cohesive library catalog entries. Focus on Islamic learning progression, difficulty classification, and scholarly categorization. Generate user-friendly descriptions and accurate categorizations for Islamic library systems."
+      }
+    }
+  },
+  "agentOptimizations": {
+    "interactiveMode": false,
+    "uiElements": false,
+    "promptQueue": false,
+    "autoComplete": false,
+    "keyboardShortcuts": false,
+    "synthesisMode": true,
+    "catalogFocused": true,
+    "streamlined": true
+  }
+}

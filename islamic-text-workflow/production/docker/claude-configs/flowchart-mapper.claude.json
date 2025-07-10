@@ -1,0 +1,66 @@
+{
+  "numStartups": 1,
+  "installMethod": "global",
+  "autoUpdates": false,
+  "tipsHistory": {},
+  "promptQueueUseCount": 0,
+  "autoUpdaterStatus": "disabled",
+  "userID": "34fdb7cd7aa60e7f4dd47bb684ba489c0a6bbab75cbfffa14c6792ae39ff4054",
+  "hasCompletedOnboarding": true,
+  "lastOnboardingVersion": "1.0.24",
+  "projects": {
+    "/app": {
+      "allowedTools": [
+        "Read",
+        "Edit", 
+        "Bash",
+        "Grep",
+        "WebFetch"
+      ],
+      "disallowedTools": [
+        "Write",
+        "NotebookRead",
+        "NotebookEdit",
+        "Task"
+      ],
+      "context": {
+        "agent_type": "flowchart_mapper",
+        "specialization": "islamic_intellectual_architecture",
+        "workflow_mode": "automated",
+        "session_persistence": true,
+        "scholarly_focus": [
+          "hadith_commentary_methodologies",
+          "quranic_exegesis_traditions", 
+          "islamic_jurisprudence_frameworks",
+          "theological_treatise_structures"
+        ]
+      },
+      "history": [],
+      "dontCrawlDirectory": true,
+      "enableArchitectTool": false,
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "approvedMcprcServers": [],
+      "rejectedMcprcServers": [],
+      "hasTrustDialogAccepted": true,
+      "hasCompletedProjectOnboarding": true,
+      "agentConfiguration": {
+        "headlessMode": true,
+        "sessionTimeout": 3600,
+        "tokenBudget": 100000,
+        "restartThreshold": 90000,
+        "contextCompression": true,
+        "systemPromptTemplate": "You are an Enhanced Flowchart Mapper Agent specializing in Islamic text architectural analysis. Mission: Generate comprehensive flowchart analysis for Islamic books and texts. Focus on Islamic scholarly traditions and methodologies. Identify hadith commentary patterns, fiqh structures, tafsir approaches. Generate practical architectural insights for Islamic learning. Return only valid JSON formatted for database storage."
+      }
+    }
+  },
+  "agentOptimizations": {
+    "interactiveMode": false,
+    "uiElements": false,
+    "promptQueue": false,
+    "autoComplete": false,
+    "keyboardShortcuts": false,
+    "scholarlyMode": true,
+    "deepAnalysis": true
+  }
+}

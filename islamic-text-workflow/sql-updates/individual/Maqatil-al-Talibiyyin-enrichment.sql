@@ -1,0 +1,17 @@
+-- Book Enrichment SQL for Maqatil al-Talibiyyin
+-- Generated: 2025-07-04
+-- Book ID: 1dfdd183-b895-4fe3-8384-36ce5fd97147
+
+UPDATE books SET
+    title_alias = 'Maqatil al-Talibiyyin; Maqatil al Talibiyyin; Maqatil Talibiyyin; The Martyrdom of the Descendants of Abu Talib; Martyrs of the Talibids; The Killings of the Talibids; Maqatil al-Talibiyeen; Maqatil at-Talibiyyin; The Deaths of the Descendants of Abu Talib; The Political Martyrdoms; Abu Talib Family Martyrs; Talibid Martyrology; The Persecuted Descendants',
+    keywords = ARRAY[
+        'Maqatil', 'Talibiyyin', 'Talibids', 'Abu Talib', 'Martyrdom', 'Shahada', 'Political persecution', 'Ahl al-Bayt', 'Descendants of Ali', 'Shi''a history', 'Islamic history', 'Abu l-Faraj al-Isfahani', 'Biographical dictionary', 'Martyrology', 'Historical encyclopedia', 'Karbala', 'Imam Husayn', 'Imam Ali', 'Fatima', 'Hasan', 'Abbasid persecution', 'Umayyad persecution', 'Zayd ibn Ali', 'Zaydi uprising', 'Muhammad al-Nafs al-Zakiyya', 'Prison martyrs', 'Political resistance', 'Justice', 'Haqq', 'Genealogy', 'Nasab', 'Banu Hashim', 'Early Islamic history', 'Sectarian history', 'Religious persecution', 'Harun al-Rashid', 'Al-Ma''mun', 'Caliphate', 'Opposition movements', 'Tribal genealogy', 'Historical methodology', 'Source criticism', 'Eyewitness accounts', 'Oral tradition', 'Medieval Islamic historiography', 'Shi''a martyrdom paradigm', 'Anti-Alid persecution', 'Succession disputes', 'Righteous uprisings', 'Historical documentation', 'Biographical literature', 'Islamic civilization', 'Political analysis', 'Theological implications', 'Historical consciousness', 'Identity formation'
+    ],
+    description = 'A comprehensive historical encyclopedia documenting the martyrdom and persecution of the descendants of Abu Talib from the time of Prophet Muhammad to the 4th century AH. Written by Abu l-Faraj al-Isfahani (284-356 AH), this monumental work contains over 200 biographical articles on Talibids who died for political reasons, were murdered, or died in prison or exile. The work serves as both an invaluable historical source and a foundational text for Shi''a historical consciousness, establishing the martyrdom paradigm central to Shi''a identity.
+
+The encyclopedia systematically documents political persecution patterns across multiple generations, from early martyrdoms like Ja''far ibn Abi Talib at Mu''tah to contemporary cases during the author''s lifetime. It includes detailed coverage of the Battle of Karbala, Zaydi uprisings, Abbasid persecution campaigns, and prison martyrdoms, supported by comprehensive genealogical documentation and source criticism.
+
+Notable for its methodological rigor, the work compiles information from tribal historians, court records, and oral traditions that are no longer extant, making it an irreplaceable source for early Islamic history. The author''s Shi''a perspective is evident in his focus on justice-seeking (haqq) as the motivation for Talibid revolts and his emphasis on the righteousness of their cause.
+
+This work significantly influenced later historians including al-Shaykh al-Mufid, Ibn Sufi, Ibn ''Inaba, and several Zaydi authors, and remains essential for understanding the relationship between political power and religious legitimacy in early Islam. The integration of genealogical precision with political analysis makes it a cornerstone of Islamic historical literature and Shi''a studies.'
+WHERE id = '1dfdd183-b895-4fe3-8384-36ce5fd97147';

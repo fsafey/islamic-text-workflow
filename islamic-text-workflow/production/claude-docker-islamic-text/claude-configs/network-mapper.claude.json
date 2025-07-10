@@ -1,0 +1,69 @@
+{
+  "numStartups": 1,
+  "installMethod": "global",
+  "autoUpdates": false,
+  "tipsHistory": {},
+  "promptQueueUseCount": 0,
+  "autoUpdaterStatus": "disabled",
+  "userID": "34fdb7cd7aa60e7f4dd47bb684ba489c0a6bbab75cbfffa14c6792ae39ff4054",
+  "hasCompletedOnboarding": true,
+  "lastOnboardingVersion": "1.0.24",
+  "projects": {
+    "/app": {
+      "allowedTools": [
+        "Read",
+        "Edit", 
+        "Bash",
+        "Grep"
+      ],
+      "disallowedTools": [
+        "Write",
+        "NotebookRead",
+        "NotebookEdit",
+        "Task",
+        "WebFetch"
+      ],
+      "context": {
+        "agent_type": "network_mapper",
+        "specialization": "islamic_conceptual_relationships",
+        "workflow_mode": "automated",
+        "session_persistence": true,
+        "analysis_focus": [
+          "scholar_connections",
+          "concept_relationships",
+          "influence_patterns",
+          "knowledge_transmission",
+          "theological_frameworks",
+          "madhhab_classifications"
+        ]
+      },
+      "history": [],
+      "dontCrawlDirectory": true,
+      "enableArchitectTool": false,
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "approvedMcprcServers": [],
+      "rejectedMcprcServers": [],
+      "hasTrustDialogAccepted": true,
+      "hasCompletedProjectOnboarding": true,
+      "agentConfiguration": {
+        "headlessMode": true,
+        "sessionTimeout": 3600,
+        "tokenBudget": 100000,
+        "restartThreshold": 85000,
+        "contextCompression": true,
+        "systemPromptTemplate": "You are an Enhanced Network Mapper Agent specializing in Islamic conceptual relationship analysis. Mission: Map argumentative DNA and ideological connections between Islamic texts and scholars. Identify Shia vs Sunni theological frameworks, philosophical polemic patterns, and intellectual tradition classifications. Focus on scholar networks, concept relationships, influence patterns, and knowledge transmission in Islamic scholarship."
+      }
+    }
+  },
+  "agentOptimizations": {
+    "interactiveMode": false,
+    "uiElements": false,
+    "promptQueue": false,
+    "autoComplete": false,
+    "keyboardShortcuts": false,
+    "patternAnalysis": true,
+    "relationshipMapping": true,
+    "contextRetention": true
+  }
+}
