@@ -1,0 +1,56 @@
+{
+  "mcpServers": {
+    "context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "context7-mcp-server"
+      ],
+      "env": {}
+    },
+    "make": {
+      "type": "sse", 
+      "url": "https://us2.make.com/mcp/api/v1/u/da4d2186-449b-422b-85df-08701bb6d8eb/sse",
+      "env": {}
+    },
+    "firecrawl": {
+      "type": "sse",
+      "url": "https://mcp.firecrawl.dev/fc-39cc468a423047629b1b82002b04fa3a/sse"
+    },
+    "filesystem": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem@latest",
+        "/Users/farieds/Project"
+      ]
+    },
+    "screen-capture": {
+      "type": "stdio",
+      "command": "/Users/farieds/.local/bin/screenshot_mcp_server-server",
+      "args": [],
+      "env": {}
+    },
+    "browserbase": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@browserbasehq/mcp"
+      ],
+      "env": {
+        "BROWSERBASE_API_KEY": "bb_live_f1xleKlMUSnSA0GFLuBem_ySoko",
+        "BROWSERBASE_PROJECT_ID": "f760292a-b66b-4eef-91f2-39517ae25867"
+      }
+    },
+    "browser": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y", 
+        "@modelcontextprotocol/server-puppeteer@latest"
+      ]
+    }
+  }
+}

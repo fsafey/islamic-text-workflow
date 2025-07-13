@@ -1,6 +1,0 @@
-{
-  "name": "Stage 1: Islamic Text Hybrid Analysis",
-  "teamId": 221027,
-  "blueprint": "",
-  "scheduling": "{\"type\":\"interval\",\"interval\":5,\"intervalType\":\"minutes\"}"
-}

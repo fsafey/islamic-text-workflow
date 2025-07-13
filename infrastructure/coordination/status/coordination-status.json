@@ -1,0 +1,17 @@
+{
+  "system_status": "active",
+  "last_updated": "2025-07-13T01:45:00Z",
+  "main_instance": {
+    "status": "active",
+    "current_task": "setting up coordination system",
+    "session_id": "main-session"
+  },
+  "docker_instance": {
+    "status": "pending",
+    "current_task": "awaiting instructions",
+    "session_id": "docker-session"
+  },
+  "pending_tasks": 0,
+  "completed_tasks": 0,
+  "active_coordination": true
+}

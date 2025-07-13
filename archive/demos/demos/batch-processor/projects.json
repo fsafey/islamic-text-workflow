@@ -1,0 +1,24 @@
+{
+  "projects": [
+    {
+      "name": "project-alpha",
+      "path": "./project-alpha",
+      "tasks": ["test", "update-deps", "generate-docs"]
+    },
+    {
+      "name": "project-beta", 
+      "path": "./project-beta",
+      "tasks": ["test", "lint", "build"]
+    },
+    {
+      "name": "project-gamma",
+      "path": "./project-gamma", 
+      "tasks": ["analyze", "refactor", "test"]
+    }
+  ],
+  "config": {
+    "parallel": true,
+    "maxConcurrent": 2,
+    "notifyOnComplete": true
+  }
+}
