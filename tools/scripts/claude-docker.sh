@@ -8,6 +8,7 @@ FORCE_REBUILD=false
 CONTINUE_FLAG=""
 MEMORY_LIMIT=""
 GPU_ACCESS=""
+API_MODE=false
 ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -31,6 +32,10 @@ while [[ $# -gt 0 ]]; do
         --gpus)
             GPU_ACCESS="$2"
             shift 2
+            ;;
+        --api)
+            API_MODE=true
+            shift
             ;;
         *)
             ARGS+=("$1")
@@ -261,8 +266,15 @@ else
 fi
 
 # Run Claude Code in Docker
-echo "Starting Claude Code in Docker..."
-docker run -it --rm \
+if [ "$API_MODE" = true ]; then
+    echo "Starting Claude Code in API mode..."
+    INTERACTIVE_FLAGS="-i"
+else
+    echo "Starting Claude Code in Docker..."
+    INTERACTIVE_FLAGS="-it"
+fi
+
+docker run $INTERACTIVE_FLAGS --rm \
     $DOCKER_OPTS \
     -v "$CURRENT_DIR:/workspace" \
     -v "$HOME/.claude-docker/claude-home:/home/claude-user/.claude:rw" \

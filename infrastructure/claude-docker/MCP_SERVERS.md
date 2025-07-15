@@ -52,7 +52,6 @@ claude mcp add-json github -s user '{"command":"npx","args":["-y","@modelcontext
 1. Add required variables to `.env`:
 ```env
 GITHUB_TOKEN=your_token_here
-ANTHROPIC_API_KEY=your_key_here
 ```
 
 2. Reference them in `mcp-servers.txt` using `${VAR_NAME}` syntax

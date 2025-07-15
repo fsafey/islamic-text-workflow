@@ -11,7 +11,19 @@
     "current_task": "awaiting instructions",
     "session_id": "docker-session"
   },
-  "pending_tasks": 0,
+  "pending_tasks": 1,
   "completed_tasks": 0,
-  "active_coordination": true
+  "active_coordination": true,
+  "current_task": {
+    "id": "task-001-academic-analysis",
+    "priority": "high",
+    "status": "ready_for_processing",
+    "file": "infrastructure/coordination/inbox/task-academic-analysis.md"
+  },
+  "capabilities": {
+    "mcp_servers": ["serena", "context7", "twilio"],
+    "coordination_system": "file_based",
+    "project_structure": "academic_research_optimized"
+  },
+  "ready_for_demo": true
 }
