@@ -18,6 +18,14 @@ yarn-error.log*
 .vscode/
 .idea/
 *.swp
+
+# External repositories (we integrate via MCP, not direct inclusion)
+graphiti-main/
+
+# Large data files (add specific patterns as needed)
+*.large.csv
+*.dump
+*.sql
 *.swo
 
 # OS
