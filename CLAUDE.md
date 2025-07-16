@@ -258,8 +258,10 @@ For detailed implementation, troubleshooting, and advanced patterns, refer to th
 - **FORMAT**: `source tools/scripts/graphiti-commands.sh && graph_remember "INSIGHT: [domain] - [discovery/explanation] - [impact]"`
 
 ### Session Conclusion
-- **END OF SESSION**: Auto-summarize accomplishments with context awareness
-- **FORMAT**: `source tools/scripts/graphiti-commands.sh && graph_remember "SESSION END: [context] - [accomplishments] - [outcomes/next steps]"`
+- **END OF SESSION**: Auto-summarize accomplishments with timestamp-prefixed documentation
+- **SESSION SUMMARY FORMAT**: `# YYYY-MM-DD_HHMMSS - [Session Title]`
+- **KNOWLEDGE GRAPH FORMAT**: `source tools/scripts/graphiti-commands.sh && graph_remember "SESSION END: [context] - [accomplishments] - [outcomes/next steps]"`
+- **FILE NAMING**: `research/output/YYYY-MM-DD_HHMMSS-session-[descriptive-title].md`
 
 ## 💡 Pro Tips
 

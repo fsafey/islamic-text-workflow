@@ -16,7 +16,9 @@ End the current development session with accomplishment summary.
 
 ## Implementation
 This command:
-- Closes the current ProjectSession entity
+- Closes the current ProjectSession entity with timestamp documentation
 - Records final Git status and changes
 - Links all session activities (decisions, features, problems)
-- Stores accomplishment summary for future reference
+- Stores accomplishment summary with timestamp-prefixed format
+- **Auto-creates**: `research/output/YYYY-MM-DD_HHMMSS-session-[title].md`
+- **Header Format**: `# YYYY-MM-DD_HHMMSS - [Session Title]`

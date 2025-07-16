@@ -81,12 +81,51 @@ graph_status() {
 # Export knowledge graph
 graph_export() {
     echo "Exporting knowledge graph..."
+    timestamp=$(date +%Y%m%d_%H%M%S)
     if [ -f ~/.claude/graphiti_memory.txt ]; then
-        cp ~/.claude/graphiti_memory.txt "/Users/farieds/Project/islamic-text-workflow/research/output/knowledge_export_$(date +%Y%m%d_%H%M%S).txt"
+        cp ~/.claude/graphiti_memory.txt "/Users/farieds/Project/islamic-text-workflow/research/output/knowledge_export_${timestamp}.txt"
         echo "Exported to research/output/"
+        echo ""
+        echo "📋 Session Summary Template:"
+        echo "Create: research/output/${timestamp}-session-[descriptive-title].md"
+        echo "Header: # ${timestamp} - [Session Title]"
     else
         echo "No memory file found"
     fi
+}
+
+# Create timestamped session summary
+graph_create_session_summary() {
+    if [ -z "$1" ]; then
+        echo "Usage: graph_create_session_summary 'session-title'"
+        return 1
+    fi
+    timestamp=$(date +%Y%m%d_%H%M%S)
+    session_file="/Users/farieds/Project/islamic-text-workflow/research/output/${timestamp}-session-${1}.md"
+    
+    cat > "$session_file" << EOF
+# ${timestamp} - ${1}
+
+**Session Type**: [Development/Islamic Research/Graphiti Operations]
+**Duration**: [time]
+**Knowledge Graph Entries**: [count]
+
+## 🎯 Session Objectives
+
+## 🔍 Key Discoveries
+
+## 📋 Technical Changes
+
+## 🧠 Knowledge Graph Insights
+
+## ✅ Session Validation
+
+---
+
+*Session summary auto-generated with timestamp formatting for chronological organization.*
+EOF
+    
+    echo "Created session summary template: $session_file"
 }
 
 # Islamic text specific commands
