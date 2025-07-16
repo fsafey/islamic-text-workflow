@@ -214,13 +214,60 @@ This project maintains continuity through:
 
 For detailed implementation, troubleshooting, and advanced patterns, refer to the comprehensive conversation history referenced in README.md that covers the complete integration process.
 
+## 🤖 Automatic Knowledge Graph Tracking Protocol
+
+### Session Lifecycle Automation
+- **CONVERSATION START**: Auto-execute session tracking with project context detection
+- **ON FIRST USER MESSAGE**: Auto-run `source tools/scripts/graphiti-commands.sh && graph_remember "SESSION START: auto-session-$(date +%Y%m%d_%H%M%S) - Context: [development/islamic-research/graphiti-ops] - Request: [brief description]"`
+- **CONTINUOUS OPERATION**: Auto-track all significant activities based on detected context
+
+### Context-Aware Development Tracking
+- **WHEN configuring systems**: Auto-track infrastructure setup and integration decisions
+- **WHEN setting up Claude instances**: Auto-log multi-agent coordination choices
+- **WHEN solving technical problems**: Auto-store general solution patterns
+- **FORMAT**: `source tools/scripts/graphiti-commands.sh && graph_remember "DEVELOPMENT: [context] - [technical choice/solution] - [rationale]"`
+
+### Context-Aware Islamic Research Tracking (Islamic Instance Mode)
+- **WHEN processing Arabic texts**: Auto-execute text analysis and entity extraction
+- **WHEN discovering scholars/concepts**: Auto-store in knowledge graph with temporal context
+- **WHEN finding text relationships**: Auto-record cross-references and manuscript connections
+- **FORMAT**: `source tools/scripts/graphiti-commands.sh && graph_remember "ISLAMIC TEXT DISCOVERY: [entity/relationship/insight found]"`
+
+### Universal Decision Tracking
+- **BEFORE choosing approaches**: Auto-record methodology decisions with context
+- **WHEN selecting technical solutions**: Auto-log choices and alternatives considered
+- **AFTER validating outcomes**: Auto-store results and lessons learned
+- **FORMAT**: `source tools/scripts/graphiti-commands.sh && graph_remember "DECISION: [context] - [choice] - [rationale]"`
+
+### Code and Configuration Tracking
+- **ON Edit/MultiEdit/Write**: Auto-track changes with contextual description
+- **WHEN modifying Docker/Graphiti configs**: Auto-log infrastructure changes
+- **WHEN updating slash commands**: Auto-record interface improvements
+- **FORMAT**: `source tools/scripts/graphiti-commands.sh && graph_remember "CODE CHANGE: [file] - [modification description] - [purpose/context]"`
+
+### Universal Problem Resolution
+- **WHEN tools fail or errors occur**: Auto-log problems and solutions by context
+- **WHEN configuration issues arise**: Auto-store infrastructure fixes
+- **WHEN integration challenges emerge**: Auto-record coordination solutions
+- **FORMAT**: `source tools/scripts/graphiti-commands.sh && graph_remember "PROBLEM SOLVED: [context] - [issue] - [solution applied]"`
+
+### Knowledge Discovery Automation
+- **WHEN explaining complex concepts**: Auto-store insights and methodological discoveries
+- **WHEN finding architectural patterns**: Auto-remember system design insights
+- **WHEN discovering optimization opportunities**: Auto-record performance improvements
+- **FORMAT**: `source tools/scripts/graphiti-commands.sh && graph_remember "INSIGHT: [domain] - [discovery/explanation] - [impact]"`
+
+### Session Conclusion
+- **END OF SESSION**: Auto-summarize accomplishments with context awareness
+- **FORMAT**: `source tools/scripts/graphiti-commands.sh && graph_remember "SESSION END: [context] - [accomplishments] - [outcomes/next steps]"`
+
 ## 💡 Pro Tips
 
-1. **Start each session with `poverview`** - See recent activity and decisions
-2. **Use `gr` frequently** - Store insights as you discover them  
-3. **Leverage `claude2`** - Second instance for experimentation and specialized tasks
-4. **Search before implementing** - Use `psearch` to find previous solutions
-5. **Track decisions immediately** - Use `pdecision` for important choices
-6. **End sessions with summaries** - Use `pend` for proper session closure
+1. **Start each session with `poverview`** - See recent project activity and decisions across all contexts
+2. **Use automatic tracking** - Knowledge graph captures insights contextually as you work
+3. **Leverage `claude2`** - Launch specialized instances for Islamic research, Graphiti operations, or engineering tasks
+4. **Search before implementing** - Use `psearch` to find previous solutions across all project contexts
+5. **Trust the automation** - Focus on your work while tracking happens automatically based on context
+6. **Review with `gs`** - Search accumulated knowledge across development, research, and operational insights
 
-This Islamic Text Workflow project is designed for intelligent, persistent, and collaborative research. The knowledge graph remembers everything, enabling sophisticated analysis and discovery across all your Islamic text research activities.
+This Islamic Text Workflow project is designed for intelligent, persistent, and collaborative work with **context-aware automatic knowledge capture**. The knowledge graph remembers everything as you work, enabling sophisticated analysis and discovery across development, Islamic text research, and system operations.

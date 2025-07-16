@@ -115,4 +115,10 @@ alias gt='graph_analyze_text'
 alias gst='graph_status'
 alias gstart='graph_start'
 
+# Claude Docker instances - clean, direct access
+alias claude2='/Users/farieds/Project/islamic-text-workflow/tools/scripts/interactive-claude-docker.sh'
+alias claude-graphiti='/Users/farieds/Project/islamic-text-workflow/tools/scripts/claude-graphiti.sh'
+alias claude-islamic='/Users/farieds/Project/islamic-text-workflow/tools/scripts/claude-islamic.sh'
+alias claude-engineering='/Users/farieds/Project/islamic-text-workflow/tools/scripts/claude-engineering.sh'
+
 echo "Graphiti commands loaded! Type 'gstart' to begin."

@@ -1,0 +1,16 @@
+Tue Jul 15 18:33:30 EDT 2025: Testing Graphiti integration with Islamic text workflow - this is a knowledge graph test entry
+Tue Jul 15 18:38:35 EDT 2025: Testing Claude Docker integration with Graphiti - this uses local Claude containers instead of external APIs
+Tue Jul 15 18:44:13 EDT 2025: PROJECT_SESSION: Started 'graphiti-project-integration' on branch 'main' with       14 modified files
+Tue Jul 15 18:44:17 EDT 2025: PROJECT_DECISION: Configured Graphiti to use Claude Docker instead of OpenAI for local, cost-free processing
+Tue Jul 15 18:45:14 EDT 2025: PROJECT_SESSION_END: 'Successfully configured Graphiti for Islamic Text Workflow project development tracking with Claude Docker integration' on branch 'main' with       15 modified files
+Tue Jul 15 23:36:22 EDT 2025: PROJECT_SESSION: Started '2025-07-15-2336' on branch 'main' with        1 modified files
+Tue Jul 15 23:44:12 EDT 2025: PROJECT_PROBLEM: Claude Docker instance exits with 'No conversation 
+  found to continue' preventing second Claude instance startup | SOLUTION: pending
+Tue Jul 15 23:44:57 EDT 2025: PROJECT_PROBLEM: Claude Docker instance exits with 'No conversation found to continue' preventing second Claude instance startup | SOLUTION: pending
+Tue Jul 15 23:46:39 EDT 2025: PROJECT_PROBLEM: Claude Docker instance exits with 'No conversation 
+  found to continue' preventing second Claude instance startup | SOLUTION: pending
+Tue Jul 15 23:47:13 EDT 2025: PROJECT_PROBLEM: Claude Docker instance exits with No conversation found
+   to continue preventing second Claude instance startup | SOLUTION: Modified
+   interactive-claude-docker.sh to pass --new flag forcing fresh 
+  conversation start instead of resume mode Added automatic cleanup
+   of conversation state files on exit
