@@ -4,99 +4,18 @@
   "service": "app",
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
-  "overrideCommand": false,
   
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-python.python",
-        "ms-python.debugpy",
-        "ms-python.pylint",
-        "ms-python.flake8", 
-        "ms-vscode.vscode-docker",
-        "neo4j.neo4j",
-        "humao.rest-client",
-        "ms-vscode.vscode-json",
-        "yzhang.markdown-all-in-one",
-        "ms-vscode.vscode-markdown",
-        "streetsidesoftware.code-spell-checker",
-        "github.copilot",
-        "ms-vscode-remote.remote-containers",
-        "ms-vscode.vscode-yaml",
-        "ms-toolsai.jupyter",
-        "ms-toolsai.jupyter-renderers"
+        "ms-python.python"
       ],
       "settings": {
-        "terminal.integrated.defaultProfile.linux": "bash",
-        "editor.formatOnSave": true,
-        "editor.defaultFormatter": "ms-python.black-formatter",
-        "python.defaultInterpreterPath": "/usr/local/bin/python",
-        "python.formatting.provider": "black",
-        "python.linting.enabled": true,
-        "python.linting.pylintEnabled": true,
-        "files.autoSave": "onFocusChange",
-        "markdown.preview.breaks": true,
-        "files.associations": {
-          "*.md": "markdown",
-          "CLAUDE.md": "markdown"
-        }
+        "terminal.integrated.defaultProfile.linux": "bash"
       }
     }
   },
   
-  "forwardPorts": [7474, 7687, 8000, 8001, 8080, 9000],
-  "portsAttributes": {
-    "7474": {
-      "label": "Neo4j Browser",
-      "onAutoForward": "openBrowser"
-    },
-    "7687": {
-      "label": "Neo4j Bolt Protocol"
-    },
-    "8000": {
-      "label": "Claude Docker API",
-      "onAutoForward": "notify"
-    },
-    "8001": {
-      "label": "Graphiti API Server"
-    },
-    "8080": {
-      "label": "Documentation Server"
-    },
-    "9000": {
-      "label": "Development Server"
-    }
-  },
-  
   "postCreateCommand": ".devcontainer/setup.sh",
-  "postStartCommand": "source ~/.bashrc && echo '🕌 Islamic Text Workflow Dev Container Ready!'",
-  
-  "remoteUser": "developer",
-  "containerUser": "developer",
-  
-  "mounts": [
-    "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind,readonly",
-    "source=${localEnv:HOME}/.claude-docker,target=/home/developer/.claude-docker,type=bind,consistency=cached"
-  ],
-  
-  "features": {
-    "ghcr.io/devcontainers/features/git:1": {
-      "ppa": true,
-      "version": "latest"
-    },
-    "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "version": "latest",
-      "moby": true
-    }
-  },
-  
-  "containerEnv": {
-    "PYTHONPATH": "/workspace:/workspace/graphiti-main",
-    "ISLAMIC_TEXT_WORKFLOW": "/workspace",
-    "NEO4J_URI": "bolt://neo4j:7687",
-    "NEO4J_USER": "neo4j",
-    "NEO4J_PASSWORD": "islamictext2024",
-    "CLAUDE_DOCKER_API": "http://localhost:8000"
-  }
+  "remoteUser": "developer"
 }

@@ -1,79 +1,38 @@
 # syntax=docker/dockerfile:1
-FROM python:3.11-slim as base
+FROM python:3.11-slim AS base
 
-# Install system dependencies with version pinning for reproducibility
+# Install only essential system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
-    wget \
-    vim \
-    nano \
-    jq \
-    docker.io \
-    docker-compose \
-    build-essential \
-    pkg-config \
-    libssl-dev \
-    libffi-dev \
-    libxml2-dev \
-    libxslt1-dev \
-    zlib1g-dev \
-    libjpeg-dev \
-    libpng-dev \
+    bash \
+    sudo \
     ca-certificates \
-    gnupg \
-    lsb-release \
     && rm -rf /var/lib/apt/lists/*
 
-# Create non-privileged user following security best practices
+# Create non-privileged user with sudo access
 RUN groupadd -g 1000 developer && \
     useradd -m -s /bin/bash -u 1000 -g developer developer && \
-    usermod -aG docker developer
+    echo 'developer ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Create workspace directory with proper ownership
 WORKDIR /workspace
 RUN chown -R developer:developer /workspace
 
-# Switch to non-root user for remaining operations
 USER developer
 
-# Install Python development tools
+# Install only essential Python tools
 RUN pip install --user --no-cache-dir \
-    uv \
-    black \
-    flake8 \
-    pylint \
-    pytest \
-    jupyter \
-    ipython \
-    requests \
-    aiohttp \
-    fastapi \
-    uvicorn \
-    pydantic \
-    neo4j \
-    anthropic \
-    openai \
     python-dotenv
 
-# Development target with additional tools
-FROM base as development
+# Development target
+FROM base AS development
 
 USER root
 
-# Install additional development tools
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    tree \
-    htop \
-    ncdu \
-    ripgrep \
-    fd-find \
-    bat \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install Node.js for some tooling (if needed)
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs
+# Add package installer script for on-demand installation
+COPY .devcontainer/install-packages.sh /usr/local/bin/install-packages.sh
+RUN chmod +x /usr/local/bin/install-packages.sh
 
 USER developer
 

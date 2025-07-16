@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  test-app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      target: development
+    volumes:
+      - ..:/workspace:cached
+    command: sleep 10
+    working_dir: /workspace
