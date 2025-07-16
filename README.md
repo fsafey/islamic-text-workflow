@@ -1,30 +1,84 @@
 # Islamic Text Workflow - AI-Powered Academic Research Platform
 
-A complete AI-powered research platform for Islamic text analysis, built on Claude Docker with autonomous academic workflows and multi-agent coordination.
+A complete AI-powered research platform for Islamic text analysis, built on Claude Docker with autonomous academic workflows, **Graphiti temporal knowledge graphs**, and **multiple parallel Claude instances** for advanced research coordination.
 
 📋 **MCP Setup Guide**: See [infrastructure/claude-docker/MCP_SERVERS.md](infrastructure/claude-docker/MCP_SERVERS.md) for customizing or adding more MCP servers
+
+## 🧠 **NEW: Graphiti Knowledge Graph Integration**
+
+This project now includes **complete Graphiti temporal knowledge graph capabilities** with Claude Docker integration:
+
+### ⚡ **Quick Commands**
+```bash
+# Knowledge graph operations (available in all terminals)
+gr "Store Islamic text insights"        # Remember information
+gs "search for concepts"                # Search knowledge graph  
+gt "file.txt"                          # Analyze text files
+
+# Project development tracking
+pstart "session-name"                   # Start work session
+pdecision "architectural choice"        # Track decisions
+pfeature "feature-name" "status"       # Track features
+psearch "query"                        # Search project history
+poverview                              # Project overview
+
+# Launch second Claude Docker instance
+claude2                                # Interactive second Claude instance
+```
+
+### 🎯 **Key Features**
+- **🧠 Temporal Knowledge Graphs**: Track Islamic scholarship evolution over time
+- **🔍 Hybrid Search**: Semantic + keyword + graph traversal search
+- **🤖 Local Processing**: Zero external API costs via Claude Docker
+- **📊 Project Intelligence**: Persistent memory of development decisions
+- **🕌 Islamic Text Specialization**: Arabic NLP and Islamic entity extraction
+- **🔄 Multiple Claude Instances**: Parallel processing and specialized tasks
+
+### 📚 **Complete Documentation**
+- **[Graphiti Workflow Commands](documentation/guides/GRAPHITI_WORKFLOW_COMMANDS.md)** - Complete command reference
+- **[Project Tracking Guide](documentation/guides/PROJECT_TRACKING_WITH_GRAPHITI.md)** - Development intelligence system  
+- **[Interactive Claude Docker](documentation/guides/CLAUDE_DOCKER_INTERACTIVE_USAGE.md)** - Multiple instance usage
+- **[Graphiti Integration Details](graphiti-main/claude_docker/README.md)** - Technical architecture
+
+### 🔗 **Integration Reference**
+This comprehensive integration was developed through detailed conversation and implementation. For the complete setup process, troubleshooting, and advanced usage patterns, refer to the implementation conversation that covers:
+- ✅ **Complete Graphiti framework integration** (120,854+ lines of code)
+- ✅ **Claude Docker local processing setup** (zero external API costs)
+- ✅ **Multiple Claude instance configuration** (`claude2` command)
+- ✅ **Project development tracking system** (sessions, decisions, features)
+- ✅ **Islamic text analysis specialization** (Arabic NLP, temporal entities)
+- ✅ **Knowledge graph command interface** (gr, gs, gt shortcuts)
+
+The conversation demonstrates practical usage, troubleshooting steps, and real-world implementation details for all features.
 
 ## 🏗️ Project Structure
 
 ```
 islamic-text-workflow/
+├── graphiti-main/              # 🧠 Complete Graphiti knowledge graph framework
+│   ├── graphiti_core/          # Core temporal knowledge graph library
+│   ├── claude_docker/          # Claude Docker integration for local processing
+│   ├── mcp_server/             # Model Context Protocol server
+│   ├── server/                 # FastAPI REST service
+│   └── tests/                  # Comprehensive test suite
 ├── research/                    # Core research activities
 │   ├── analysis/               # Analysis results and reports
 │   ├── methodology/            # Research methodologies
 │   ├── templates/              # Analysis templates
-│   └── output/                 # Generated research outputs
+│   └── output/                 # Generated research outputs (includes knowledge exports)
 ├── infrastructure/             # Technical infrastructure
 │   ├── claude-docker/          # Claude Docker setup and configuration
 │   ├── coordination/           # Multi-agent coordination system
 │   └── configs/                # Environment and MCP configurations
 ├── documentation/              # Project documentation
-│   ├── guides/                 # User guides and tutorials
+│   ├── guides/                 # User guides and tutorials (includes Graphiti docs)
 │   ├── api/                    # API documentation
 │   └── academic/               # Academic methodology documentation
 ├── tools/                      # Automation and utilities
-│   ├── scripts/                # Installation and deployment scripts
+│   ├── scripts/                # Shell commands (gr, gs, pstart, claude2, etc.)
 │   ├── automation/             # Automated research workflows
 │   └── utilities/              # Helper tools and scripts
+├── alias*.csv                  # Islamic text datasets (199 entries)
 └── archive/                    # Historical and reference materials
     ├── legacy/                 # Legacy files and configurations
     ├── demos/                  # Demo projects and examples
