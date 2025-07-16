@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # Neo4j for Graphiti - the only service we need
+  neo4j:
+    image: neo4j:5.26-community
+    container_name: graphiti-neo4j
+    ports:
+      - "7474:7474"  # HTTP
+      - "7687:7687"  # Bolt
+    environment:
+      - NEO4J_AUTH=neo4j/password
+      - NEO4J_PLUGINS=["apoc"]
+    volumes:
+      - neo4j-data:/data
+      - neo4j-logs:/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7474"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  neo4j-data:
+    driver: local
+  neo4j-logs:
+    driver: local

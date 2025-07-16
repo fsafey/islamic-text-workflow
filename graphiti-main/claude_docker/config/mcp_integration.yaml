@@ -1,0 +1,91 @@
+# MCP Integration Configuration for Claude Docker + Graphiti
+
+# This configuration enables MCP servers to be available within Claude Docker containers
+
+mcp_servers:
+  # Graphiti MCP Server - Knowledge Graph Memory
+  graphiti:
+    enabled: true
+    type: stdio
+    path: /Users/farieds/Project/islamic-text-workflow/graphiti-main/mcp_server
+    command: uv
+    args:
+      - run
+      - graphiti_mcp_server.py
+      - --transport
+      - stdio
+      - --group-id
+      - claude-docker
+    env:
+      NEO4J_URI: bolt://neo4j:7687  # Use Docker network name
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: password
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      MODEL_NAME: gpt-4o-mini
+      SEMAPHORE_LIMIT: 5  # Lower for Claude Docker to avoid rate limits
+    
+  # Filesystem MCP Server - File Access
+  filesystem:
+    enabled: true
+    type: stdio
+    command: npx
+    args:
+      - -y
+      - "@modelcontextprotocol/server-filesystem@latest"
+      - /Users/farieds/Project
+    
+  # Browser MCP Server - Web Access
+  browser:
+    enabled: true
+    type: stdio
+    command: npx
+    args:
+      - -y
+      - "@modelcontextprotocol/server-puppeteer@latest"
+  
+  # Screen Capture MCP Server
+  screen-capture:
+    enabled: false  # Disable in Docker by default
+    type: stdio
+    command: /Users/farieds/.local/bin/screenshot_mcp_server-server
+
+# Integration Settings
+integration:
+  # Mount MCP config into Claude Docker containers
+  mount_mcp_config: true
+  mcp_config_path: /Users/farieds/Project/islamic-text-workflow/infrastructure/configs/.mcp.json
+  
+  # Enable MCP in worker mode
+  enable_for_workers: true
+  
+  # MCP server startup timeout
+  startup_timeout: 30  # seconds
+  
+  # Retry settings
+  retry_attempts: 3
+  retry_delay: 2  # seconds
+
+# Claude Docker specific settings
+claude_docker:
+  # Pass MCP server info to Claude via CLAUDE.md
+  inject_mcp_info: true
+  
+  # MCP tools available in worker mode
+  worker_mcp_tools:
+    - graphiti.add_episode
+    - graphiti.search_nodes
+    - graphiti.search_facts
+    - graphiti.get_episodes
+    - filesystem.read_file
+    - filesystem.write_file
+    - browser.navigate
+    - browser.screenshot
+  
+  # MCP tools available in software engineering mode
+  software_engineering_mcp_tools:
+    - graphiti.add_episode
+    - graphiti.search_nodes
+    - graphiti.delete_entity_edge
+    - filesystem.read_file
+    - filesystem.write_file
+    - filesystem.list_directory

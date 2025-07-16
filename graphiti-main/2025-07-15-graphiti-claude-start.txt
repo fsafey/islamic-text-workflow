@@ -1,0 +1,181 @@
+╭────────────────────────────────────────────────────────────────────╮
+│ ✻ Welcome to Claude Code!                                          │
+│                                                                    │
+│   /help for help, /status for your current setup                   │
+│                                                                    │
+│   cwd: /Users/farieds/Project/islamic-text-workflow/graphiti-main  │
+╰────────────────────────────────────────────────────────────────────╯
+
+> /clear 
+  ⎿  (no content)
+
+> Current Documentation Structure:
+
+    claude_docker/
+    ├── README.md                              # Main entry - 
+    explains both modes
+    └── docs/
+        ├── README_GRAPHITI_CLAUDE_DOCKER.md   # Complete setup 
+  guide
+        ├── ECOSYSTEM_VISUALIZATION.md         # System 
+  architecture
+    diagrams
+        ├── CLAUDE_DOCKER_ECOSYSTEM_ARCHITECTURE.md  # MCP and
+    extensibility
+        ├── ORCHESTRATION_POWER_ANALYSIS.md    # Why orchestration
+    matters
+        ├── IMPLEMENTATION_COMPARISON.md       # Updated with
+    decision matrix
+        ├── DUAL_MODE_ARCHITECTURE.md         # NEW - Detailed
+    comparison
+        └── QUICK_START.md                     # NEW - 5-minute 
+  guide
+
+    The documentation now clearly presents both modes as valid
+    options, with guidance on when to use each one. Ready for fresh
+    context! have a look at these. explain to someone new to this 
+  code base what this is and how to use it
+
+⏺ I'll analyze the Graphiti codebase and its Claude Docker
+  integration to explain what this is and how to use it.
+
+⏺ Read(claude_docker/README.md)
+  ⎿  Read 128 lines (ctrl+r to expand)
+
+⏺ Read(claude_docker/docs/QUICK_START.md)
+  ⎿  Read 159 lines (ctrl+r to expand)
+
+⏺ Read(README.md)
+  ⎿  Read 100 lines (ctrl+r to expand)
+
+⏺ What is Graphiti + Claude Docker?
+
+  Graphiti is a Python framework for building temporally-aware
+  knowledge graphs designed for AI agents. It extracts entities and
+   relationships from text, tracks how they change over time, and
+  enables sophisticated queries combining semantic search,
+  keywords, and graph traversal.
+
+  The Claude Docker integration allows you to run Graphiti entirely
+   locally using containerized Claude instances instead of external
+   APIs. This is particularly valuable for sensitive data
+  processing, especially Islamic scholarly texts.
+
+  Key Features
+
+  1. Knowledge Graph Construction: Automatically extracts entities,
+   relationships, and facts from text
+  2. Temporal Awareness: Tracks when facts were true and when they
+  were added
+  3. Hybrid Search: Combines semantic embeddings, BM25 keyword
+  search, and graph traversal
+  4. Local Processing: No external LLM API calls with Claude Docker
+   integration
+  5. Scalable Architecture: Two modes - Native (simple) or
+  Orchestration (parallel processing)
+
+  How to Use It
+
+  1. Prerequisites
+
+  - Claude Docker authenticated (from islamic-text-workflow
+  project)
+  - Google API key for embeddings
+  - Docker installed
+  - Neo4j or FalkorDB for graph storage
+
+  2. Choose Your Mode
+
+  Native Mode (for simple tasks):
+  from graphiti_core import Graphiti
+  from graphiti_core.llm_client.claude_docker_client import
+  ClaudeDockerClient
+
+  # Direct Claude Docker integration
+  graphiti = Graphiti(
+      uri="bolt://localhost:7687",
+      user="neo4j",
+      password="password",
+      llm_client=ClaudeDockerClient(config)
+  )
+
+  # Process text
+  await graphiti.add_episode(
+      name="Islamic Text",
+      episode_body="The Prophet taught about seeking knowledge..."
+  )
+
+  Orchestration Mode (for complex workflows):
+  # Start services: docker-compose up
+  from graphiti_core.llm_client.anthropic_client import
+  AnthropicClient
+
+  # Use API bridge with worker pool
+  graphiti = Graphiti(
+      uri="bolt://localhost:7687",
+      user="neo4j",
+      password="password",
+      llm_client=AnthropicClient(
+          LLMConfig(
+              api_key="local",
+              base_url="http://localhost:8000"  # Local API
+          )
+      )
+  )
+
+  # Process multiple texts in parallel
+  for chapter in book_chapters:
+      await graphiti.add_episode(name=f"Chapter {i}",
+  episode_body=chapter)
+
+  3. Query Your Knowledge Graph
+
+  # Search for entities
+  results = await graphiti.search("Prophet Muhammad")
+
+  # Get entity relationships  
+  entity = await graphiti.get_entity("person-muhammad")
+  edges = await graphiti.get_edges_by_entity_id(entity.id)
+
+  # Time-based queries
+  past_facts = await graphiti.search(
+      query="Islamic scholars",
+      time_range=(datetime(2020,1,1), datetime(2023,1,1))
+  )
+
+  What Makes This Special?
+
+  1. Privacy: All processing happens locally - no data leaves your
+  machine
+  2. Islamic Text Optimization: Pre-configured for scholarly
+  Islamic texts
+  3. Temporal Tracking: See how knowledge evolves over time
+  4. Flexible Architecture: Choose simple direct mode or powerful
+  orchestration
+  5. Production Ready: Built on proven Zep memory layer technology
+
+  Quick Start (5 minutes)
+
+  # 1. Clone and navigate
+  cd graphiti-main/claude_docker
+
+  # 2. Start services (choose one)
+  docker-compose -f docker/docker-compose-native.yml up -d  # 
+  Native
+  # OR
+  docker-compose -f docker/docker-compose.yml up -d         # 
+  Orchestration
+
+  # 3. Set environment
+  export GOOGLE_API_KEY=your_key
+
+  # 4. Run example
+  python examples/quickstart_claude_docker_islamic.py
+
+  # 5. View results at http://localhost:7474
+
+  This creates a searchable knowledge graph from your texts,
+  enabling complex queries about entities, relationships, and how
+  information changes over time - all processed locally using your
+  authenticated Claude Docker containers.
+

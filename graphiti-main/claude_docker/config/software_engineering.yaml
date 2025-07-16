@@ -1,0 +1,158 @@
+# Graphiti Configuration for Software Engineering Mode
+# This configuration is optimized for code analysis and software architecture
+
+mode: software_engineering
+
+# Neo4j database configuration
+neo4j:
+  uri: bolt://localhost:7687
+  user: neo4j
+  password: password
+  database: neo4j
+
+# LLM configuration
+llm:
+  provider: claude_docker  # or 'anthropic' for cloud API
+  model: claude-3-sonnet-20240229
+  api_key: local
+  base_url: null  # Only needed for orchestration mode
+  
+# Embedder configuration  
+embedder:
+  provider: gemini
+  model: models/text-embedding-004
+  api_key: ${GOOGLE_API_KEY}  # Set via environment variable
+
+# Entity types for software engineering
+entity_types:
+  Function:
+    description: "A function or method in code"
+    fields:
+      - name: string
+      - module: string
+      - parameters: list[string]
+      - return_type: string
+      - docstring: string
+      
+  Class:
+    description: "A class definition"
+    fields:
+      - name: string
+      - module: string
+      - base_classes: list[string]
+      - methods: list[string]
+      - attributes: list[string]
+      
+  Module:
+    description: "A code module or file"
+    fields:
+      - name: string
+      - path: string
+      - imports: list[string]
+      - exports: list[string]
+      
+  Package:
+    description: "A software package or library"
+    fields:
+      - name: string
+      - version: string
+      - dependencies: list[string]
+      
+  Error:
+    description: "An error, bug, or issue"
+    fields:
+      - type: string
+      - message: string
+      - file: string
+      - line_number: int
+      
+  Architecture:
+    description: "An architectural decision or pattern"
+    fields:
+      - pattern: string
+      - rationale: string
+      - components: list[string]
+
+# Edge types for software relationships
+edge_types:
+  CALLS:
+    description: "Function A calls Function B"
+    source_types: [Function, Class]
+    target_types: [Function, Class]
+    
+  IMPORTS:
+    description: "Module A imports from Module B"
+    source_types: [Module, Class, Function]
+    target_types: [Module, Package]
+    
+  INHERITS:
+    description: "Class A inherits from Class B"
+    source_types: [Class]
+    target_types: [Class]
+    
+  IMPLEMENTS:
+    description: "Class A implements Interface B"
+    source_types: [Class]
+    target_types: [Class]
+    
+  DEPENDS_ON:
+    description: "Component A depends on Component B"
+    source_types: [Module, Package, Class]
+    target_types: [Module, Package, Class]
+    
+  RAISES:
+    description: "Function A can raise Error B"
+    source_types: [Function, Class]
+    target_types: [Error]
+    
+  FIXES:
+    description: "Commit A fixes Error B"
+    source_types: [Entity]
+    target_types: [Error]
+    
+  USES_PATTERN:
+    description: "Component uses architectural pattern"
+    source_types: [Module, Class]
+    target_types: [Architecture]
+
+# Processing settings
+processing:
+  # Extract code structure automatically
+  auto_extract_structure: true
+  
+  # Track code changes over time
+  temporal_tracking: true
+  
+  # Analyze import dependencies
+  analyze_dependencies: true
+  
+  # Extract docstrings and comments
+  extract_documentation: true
+
+# Search configuration
+search:
+  # Default search type for code queries
+  default_type: NODE_HYBRID_SEARCH_RRF
+  
+  # Number of results to return
+  default_num_results: 20
+  
+  # Include code context in results
+  include_context: true
+
+# Prompts for code analysis
+prompts:
+  entity_extraction: |
+    Analyze the following code and extract software engineering entities.
+    Focus on functions, classes, modules, and their relationships.
+    Pay attention to imports, inheritance, and function calls.
+    Also identify any architectural patterns or design decisions.
+    
+  relationship_analysis: |
+    Identify relationships between code entities.
+    Look for function calls, imports, inheritance, and dependencies.
+    Consider both direct and indirect relationships.
+    
+  code_summary: |
+    Provide a technical summary of this code section.
+    Focus on its purpose, key functions, and architectural role.

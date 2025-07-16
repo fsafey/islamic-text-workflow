@@ -1,0 +1,23 @@
+# Requirements for using Claude Docker with Graphiti
+# Install these in addition to requirements.txt
+
+# Graphiti core - install from parent directory or PyPI when available
+# For local development:
+# pip install -e ../
+# For production (when published):
+# graphiti-core>=0.3.0
+
+# Required for Graphiti integration
+neo4j==5.26.0
+numpy==1.26.4
+pydantic==2.9.2
+tenacity==9.0.0
+
+# Embeddings providers (choose one)
+google-generativeai==0.8.3  # For Gemini embeddings (recommended)
+# openai==1.54.5  # Alternative: OpenAI embeddings
+# voyageai==0.3.1  # Alternative: Voyage embeddings
+
+# Additional dependencies for examples
+python-dotenv==1.0.1
+rich==13.9.4  # For pretty printing in examples

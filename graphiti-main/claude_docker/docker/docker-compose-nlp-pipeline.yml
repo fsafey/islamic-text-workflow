@@ -1,0 +1,173 @@
+version: '3.8'
+
+services:
+  neo4j:
+    image: neo4j:5.26-community
+    container_name: graphiti-neo4j-nlp
+    ports:
+      - "7474:7474"  # HTTP
+      - "7687:7687"  # Bolt
+    environment:
+      - NEO4J_AUTH=neo4j/password
+      - NEO4J_PLUGINS=["apoc"]
+      - NEO4J_server_memory_heap_max__size=4G
+      - NEO4J_server_memory_heap_initial__size=2G
+      - NEO4J_server_config_strict__validation_enabled=false
+    volumes:
+      - neo4j_data_nlp:/data
+      - neo4j_logs_nlp:/logs
+    networks:
+      - graphiti-nlp
+
+  # Claude Docker API Bridge (for orchestration)
+  claude-docker-api:
+    build:
+      context: ../..
+      dockerfile: claude_docker/docker/Dockerfile.api
+    container_name: claude-docker-api
+    ports:
+      - "8000:8000"
+    environment:
+      - WORKERS=3
+      - MAX_QUEUE_SIZE=100
+      - WORKER_TIMEOUT=300
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/.cache/claude:/root/.cache/claude
+    networks:
+      - graphiti-nlp
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Graphiti Workers (3 instances for parallel processing)
+  graphiti-worker-1:
+    build:
+      context: ../..
+      dockerfile: claude_docker/docker/Dockerfile.worker
+    container_name: graphiti-nlp-worker-1
+    environment:
+      - GRAPHITI_MODE=nlp_pipeline
+      - GRAPHITI_CONFIG_PATH=/app/config/nlp_pipeline.yaml
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=password
+      - LLM_PROVIDER=anthropic
+      - LLM_BASE_URL=http://claude-docker-api:8000
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - WORKER_ID=graphiti-nlp-1
+    volumes:
+      - ./config:/app/config:ro
+      - ../workers:/app/workers:ro
+      - ${HOME}/.cache/graphiti:/root/.cache/graphiti
+      - worker_pipes:/pipes
+    stdin_open: true
+    networks:
+      - graphiti-nlp
+    depends_on:
+      - neo4j
+      - claude-docker-api
+    command: python /app/workers/graphiti_worker.py
+
+  graphiti-worker-2:
+    build:
+      context: ../..
+      dockerfile: claude_docker/docker/Dockerfile.worker
+    container_name: graphiti-nlp-worker-2
+    environment:
+      - GRAPHITI_MODE=nlp_pipeline
+      - GRAPHITI_CONFIG_PATH=/app/config/nlp_pipeline.yaml
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=password
+      - LLM_PROVIDER=anthropic
+      - LLM_BASE_URL=http://claude-docker-api:8000
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - WORKER_ID=graphiti-nlp-2
+    volumes:
+      - ./config:/app/config:ro
+      - ../workers:/app/workers:ro
+      - ${HOME}/.cache/graphiti:/root/.cache/graphiti
+      - worker_pipes:/pipes
+    stdin_open: true
+    networks:
+      - graphiti-nlp
+    depends_on:
+      - neo4j
+      - claude-docker-api
+    command: python /app/workers/graphiti_worker.py
+
+  graphiti-worker-3:
+    build:
+      context: ../..
+      dockerfile: claude_docker/docker/Dockerfile.worker
+    container_name: graphiti-nlp-worker-3
+    environment:
+      - GRAPHITI_MODE=nlp_pipeline
+      - GRAPHITI_CONFIG_PATH=/app/config/nlp_pipeline.yaml
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=password
+      - LLM_PROVIDER=anthropic
+      - LLM_BASE_URL=http://claude-docker-api:8000
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - WORKER_ID=graphiti-nlp-3
+    volumes:
+      - ./config:/app/config:ro
+      - ../workers:/app/workers:ro
+      - ${HOME}/.cache/graphiti:/root/.cache/graphiti
+      - worker_pipes:/pipes
+    stdin_open: true
+    networks:
+      - graphiti-nlp
+    depends_on:
+      - neo4j
+      - claude-docker-api
+    command: python /app/workers/graphiti_worker.py
+
+  # Optional: Redis for message queue coordination
+  redis:
+    image: redis:7-alpine
+    container_name: graphiti-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - graphiti-nlp
+    profiles:
+      - queue
+
+  # Optional: Orchestrator for coordinating workers
+  orchestrator:
+    build:
+      context: ../..
+      dockerfile: claude_docker/docker/Dockerfile.orchestrator
+    container_name: graphiti-orchestrator
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - WORKER_COUNT=3
+    volumes:
+      - ./config:/app/config:ro
+      - ../orchestrator:/app/orchestrator:ro
+    networks:
+      - graphiti-nlp
+    depends_on:
+      - redis
+      - graphiti-worker-1
+      - graphiti-worker-2
+      - graphiti-worker-3
+    profiles:
+      - orchestrator
+
+volumes:
+  neo4j_data_nlp:
+  neo4j_logs_nlp:
+  redis_data:
+  worker_pipes:
+
+networks:
+  graphiti-nlp:
+    driver: bridge

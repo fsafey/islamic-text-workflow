@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # Streamlined Claude Docker API Server with stdio workers
+  api-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: graphiti-claude-docker-api:latest
+    container_name: claude-docker-api
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount the streamlined scripts
+      - ../api/claude_docker_api_stdio.py:/app/claude_docker_api_stdio.py:ro
+      - ../api/claude_docker_api_stdio_with_logging.py:/app/claude_docker_api_stdio_with_logging.py:ro
+      - ../workers/claude_docker_worker_stdio.py:/app/claude_docker_worker_stdio.py:ro
+      - ../scripts/claude_docker_runner.sh:/workspace/claude_docker_runner.sh:ro
+      
+      # Mount logs directory to host for persistence
+      - ../logs:/app/logs:rw
+      
+      # Mount Docker socket for running Claude containers
+      - /var/run/docker.sock:/var/run/docker.sock
+      
+      # Mount Claude authentication
+      - /Users/farieds/.claude-docker:/Users/farieds/.claude-docker:rw
+      
+      # Mount Islamic text workflow project
+      - /Users/farieds/Project/islamic-text-workflow:/workspace/islamic-text-workflow:ro
+      
+    environment:
+      - PYTHONUNBUFFERED=1
+      - WORKER_COUNT=3
+    networks:
+      - claude-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Neo4j for Graphiti (if not running on host)
+  neo4j:
+    image: neo4j:5.26-community
+    container_name: claude-docker-neo4j
+    ports:
+      - "7474:7474"  # HTTP
+      - "7687:7687"  # Bolt
+    environment:
+      - NEO4J_AUTH=neo4j/password
+      - NEO4J_PLUGINS=["apoc"]
+    volumes:
+      - neo4j-data:/data
+      - neo4j-logs:/logs
+    networks:
+      - claude-network
+    restart: unless-stopped
+
+volumes:
+  neo4j-data:
+    driver: local
+  neo4j-logs:
+    driver: local
+
+networks:
+  claude-network:
+    driver: bridge

@@ -19,8 +19,7 @@ yarn-error.log*
 .idea/
 *.swp
 
-# External repositories (we integrate via MCP, not direct inclusion)
-graphiti-main/
+# External repositories - Note: graphiti-main is now included as an integrated subproject
 
 # Large data files (add specific patterns as needed)
 *.large.csv
