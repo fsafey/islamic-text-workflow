@@ -1,5 +1,12 @@
 # Interactive Claude Docker Usage Guide
 
+**📖 Main Reference**: See [CLAUDE.md](../../CLAUDE.md) for complete command overview and primary workflow documentation.
+
+**Related Documentation:**
+- **[CLAUDE.md](../../CLAUDE.md)** - Main command reference and project workflows
+- **[Project Tracking Guide](PROJECT_TRACKING_WITH_GRAPHITI.md)** - Development session tracking  
+- **[Graphiti Workflow Commands](GRAPHITI_WORKFLOW_COMMANDS.md)** - Knowledge graph operations
+
 ## 🚀 Quick Start - Second Claude Instance
 
 You now have a **second Claude CLI instance** available through Claude Docker that you can use for parallel work, specialized tasks, or isolation.

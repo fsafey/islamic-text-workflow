@@ -1,8 +1,15 @@
 # Graphiti Knowledge Graph Workflow Commands
 
+**📖 Main Reference**: See [CLAUDE.md](../../CLAUDE.md) for complete command overview and development workflows.
+
 ## Overview
 
 Graphiti is now integrated into your standard Islamic text workflow with custom shell commands for quick knowledge graph operations.
+
+**Related Documentation:**
+- **[CLAUDE.md](../../CLAUDE.md)** - Main command reference and project workflows
+- **[Project Tracking Guide](PROJECT_TRACKING_WITH_GRAPHITI.md)** - Development session tracking
+- **[Interactive Claude Docker Usage](CLAUDE_DOCKER_INTERACTIVE_USAGE.md)** - Multiple instance usage
 
 ## Setup Status ✅
 

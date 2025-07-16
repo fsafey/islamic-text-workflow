@@ -35,10 +35,18 @@ claude2                                # Interactive second Claude instance
 - **🔄 Multiple Claude Instances**: Parallel processing and specialized tasks
 
 ### 📚 **Complete Documentation**
-- **[Graphiti Workflow Commands](documentation/guides/GRAPHITI_WORKFLOW_COMMANDS.md)** - Complete command reference
+
+#### Essential Guides (Start Here)
+- **[CLAUDE.md](CLAUDE.md)** - 🎯 **Main reference for all commands and workflows**
 - **[Project Tracking Guide](documentation/guides/PROJECT_TRACKING_WITH_GRAPHITI.md)** - Development intelligence system  
+- **[Graphiti Workflow Commands](documentation/guides/GRAPHITI_WORKFLOW_COMMANDS.md)** - Complete command reference
 - **[Interactive Claude Docker](documentation/guides/CLAUDE_DOCKER_INTERACTIVE_USAGE.md)** - Multiple instance usage
-- **[Graphiti Integration Details](graphiti-main/claude_docker/README.md)** - Technical architecture
+
+#### Technical Architecture  
+- **[Graphiti Integration Details](graphiti-main/claude_docker/README.md)** - Local processing architecture
+- **[Graphiti Core Framework](graphiti-main/CLAUDE.md)** - Framework development commands
+- **[MCP Server Configuration](infrastructure/claude-docker/MCP_SERVERS.md)** - Protocol setup
+- **[Coordination System](infrastructure/coordination/README.md)** - Multi-agent communication
 
 ### 🔗 **Integration Reference**
 This comprehensive integration was developed through detailed conversation and implementation. For the complete setup process, troubleshooting, and advanced usage patterns, refer to the implementation conversation that covers:

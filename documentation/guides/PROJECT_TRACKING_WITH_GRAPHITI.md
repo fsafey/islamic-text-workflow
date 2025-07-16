@@ -1,8 +1,15 @@
 # Project Tracking with Graphiti
 
+**📖 Main Reference**: See [CLAUDE.md](../../CLAUDE.md) for quick command reference and complete workflow overview.
+
 ## Overview
 
 Graphiti is now fully configured to track your **Islamic Text Workflow project development sessions** and assist with project building. This is separate from the NLP text analysis workflows - this focuses on tracking your development work, decisions, and project evolution.
+
+**Related Documentation:**
+- **[CLAUDE.md](../../CLAUDE.md)** - Main command reference and workflows
+- **[Graphiti Workflow Commands](GRAPHITI_WORKFLOW_COMMANDS.md)** - Knowledge graph operations
+- **[Interactive Claude Docker Usage](CLAUDE_DOCKER_INTERACTIVE_USAGE.md)** - Multiple instance patterns
 
 ## ✅ What's Configured
 
