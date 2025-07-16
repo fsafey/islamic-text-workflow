@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": []
+  },
+  "enabledMcpjsonServers": [
+    "context7",
+    "make",
+    "firecrawl",
+    "filesystem",
+    "screen-capture",
+    "browserbase",
+    "browser"
+  ]
+}
