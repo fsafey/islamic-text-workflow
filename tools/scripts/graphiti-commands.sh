@@ -1,6 +1,21 @@
 #!/bin/bash
 # Graphiti Workflow Commands
-# Source this file in your shell profile: source ~/Project/islamic-text-workflow/tools/scripts/graphiti-commands.sh
+# Auto-detects workspace location for dev container compatibility
+# Source this file in your shell profile or it will be auto-loaded in dev containers
+
+# Detect workspace directory dynamically
+if [ -f "/workspace/CLAUDE.md" ]; then
+    WORKSPACE_DIR="/workspace"
+elif [ -f "$(pwd)/CLAUDE.md" ]; then
+    WORKSPACE_DIR="$(pwd)"
+elif [ -f "$(dirname "$0")/../../CLAUDE.md" ]; then
+    WORKSPACE_DIR="$(realpath "$(dirname "$0")/../..")"
+else
+    echo "Warning: Could not detect workspace directory"
+    WORKSPACE_DIR="/workspace"
+fi
+
+export WORKSPACE_DIR
 
 # Quick memory storage
 graph_remember() {
@@ -74,7 +89,7 @@ graph_status() {
         echo "- Claude Docker API: ✓ Running"
     else
         echo "- Claude Docker API: ✗ Not running"
-        echo "  Start with: cd /Users/farieds/Project/islamic-text-workflow/graphiti-main/claude_docker && ./scripts/start_claude_docker_api.sh"
+        echo "  Start with: cd ${WORKSPACE_DIR}/graphiti-main/claude_docker && ./scripts/start_claude_docker_api.sh"
     fi
 }
 
@@ -83,7 +98,7 @@ graph_export() {
     echo "Exporting knowledge graph..."
     timestamp=$(date +%Y%m%d_%H%M%S)
     if [ -f ~/.claude/graphiti_memory.txt ]; then
-        cp ~/.claude/graphiti_memory.txt "/Users/farieds/Project/islamic-text-workflow/research/output/knowledge_export_${timestamp}.txt"
+        cp ~/.claude/graphiti_memory.txt "${WORKSPACE_DIR}/research/output/knowledge_export_${timestamp}.txt"
         echo "Exported to research/output/"
         echo ""
         echo "📋 Session Summary Template:"
@@ -101,7 +116,7 @@ graph_create_session_summary() {
         return 1
     fi
     timestamp=$(date +%Y%m%d_%H%M%S)
-    session_file="/Users/farieds/Project/islamic-text-workflow/research/output/${timestamp}-session-${1}.md"
+    session_file="${WORKSPACE_DIR}/research/output/${timestamp}-session-${1}.md"
     
     cat > "$session_file" << EOF
 # ${timestamp} - ${1}
@@ -155,9 +170,9 @@ alias gst='graph_status'
 alias gstart='graph_start'
 
 # Claude Docker instances - clean, direct access
-alias claude2='/Users/farieds/Project/islamic-text-workflow/tools/scripts/interactive-claude-docker.sh'
-alias claude-graphiti='/Users/farieds/Project/islamic-text-workflow/tools/scripts/claude-graphiti.sh'
-alias claude-islamic='/Users/farieds/Project/islamic-text-workflow/tools/scripts/claude-islamic.sh'
-alias claude-engineering='/Users/farieds/Project/islamic-text-workflow/tools/scripts/claude-engineering.sh'
+alias claude2="${WORKSPACE_DIR}/tools/scripts/interactive-claude-docker.sh"
+alias claude-graphiti="${WORKSPACE_DIR}/tools/scripts/claude-graphiti.sh"
+alias claude-islamic="${WORKSPACE_DIR}/tools/scripts/claude-islamic.sh"
+alias claude-engineering="${WORKSPACE_DIR}/tools/scripts/claude-engineering.sh"
 
 echo "Graphiti commands loaded! Type 'gstart' to begin."

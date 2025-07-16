@@ -141,11 +141,33 @@ docker exec -it islamic-text-workflow-app-1 bash
 pkg all
 ```
 
+### Option 3: Multi-Instance Claude (Parallel Processing)
+```bash
+# Method 1: Multiple VS Code Dev Containers
+# 1. Open multiple VS Code windows
+# 2. Each window: "Reopen in Container"
+# 3. Each container: run `claude`
+# 4. Result: Independent Claude instances with shared workspace
+
+# Method 2: Docker Compose Scale
+docker-compose -f .devcontainer/docker-compose.yml up -d --scale app=3
+docker exec -it islamic-text-workflow-app-1 claude  # Instance 1
+docker exec -it islamic-text-workflow-app-2 claude  # Instance 2
+docker exec -it islamic-text-workflow-app-3 claude  # Instance 3
+
+# All instances share:
+# - /workspace directory
+# - Graphiti knowledge graph
+# - Project files and configurations
+```
+
 ### Dev Container Features
 - **⚡ Fast Startup**: Minimal base image loads in seconds
 - **📦 On-Demand Installation**: `pkg claude`, `pkg dev-tools`, `pkg python-dev`, `pkg graphiti`
 - **💾 Persistent Storage**: Installed packages persist across rebuilds
 - **🔄 Efficient Development**: No waiting for unnecessary dependencies
+- **🤖 Multi-Instance Claude**: Easy deployment of multiple Claude instances
+- **🧠 Shared Knowledge Graph**: All instances share the same Graphiti knowledge base
 - **🕌 Islamic Text Workflow**: Full project functionality available
 
 ## Quick Start

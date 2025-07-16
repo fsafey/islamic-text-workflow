@@ -1,0 +1,214 @@
+# Graphiti Stack - Complete containerized setup with Neo4j, Claude Docker, and Graphiti
+# This orchestrates the full Graphiti ecosystem with proper service discovery
+
+version: '3.8'
+
+services:
+  # Neo4j - Knowledge graph database
+  neo4j:
+    image: neo4j:5.26-community
+    container_name: graphiti-neo4j
+    ports:
+      - "7474:7474"  # HTTP Web Interface
+      - "7687:7687"  # Bolt Protocol
+    environment:
+      - NEO4J_AUTH=neo4j/password
+      - NEO4J_PLUGINS=["apoc"]
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+      - NEO4J_dbms_security_procedures_allowlist=apoc.*
+    volumes:
+      - neo4j-data:/data
+      - neo4j-logs:/logs
+      - neo4j-import:/var/lib/neo4j/import
+    networks:
+      - graphiti-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7474"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Claude Docker API Server
+  claude-docker-api:
+    build:
+      context: ../../graphiti-main/claude_docker/docker
+      dockerfile: Dockerfile
+    image: graphiti-claude-docker-api:latest
+    container_name: graphiti-claude-api
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount Claude Docker components
+      - ../../graphiti-main/claude_docker/api/claude_docker_api_stdio_with_logging.py:/app/claude_docker_api_stdio_with_logging.py:ro
+      - ../../graphiti-main/claude_docker/workers/claude_docker_worker_stdio.py:/app/claude_docker_worker_stdio.py:ro
+      - ../../graphiti-main/claude_docker/scripts:/app/scripts:ro
+      
+      # Mount logs directory
+      - claude-logs:/app/logs:rw
+      
+      # Mount Docker socket for Claude container management
+      - /var/run/docker.sock:/var/run/docker.sock
+      
+      # Mount Claude authentication (adjust path as needed)
+      - ~/.claude-docker:/root/.claude-docker:rw
+      
+      # Mount workspace for file access
+      - ../../:/workspace:ro
+      
+    environment:
+      - PYTHONUNBUFFERED=1
+      - WORKER_COUNT=3
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=password
+    depends_on:
+      neo4j:
+        condition: service_healthy
+    networks:
+      - graphiti-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Graphiti Service - Core knowledge graph processing
+  graphiti-service:
+    build:
+      context: ../../graphiti-main
+      dockerfile: Dockerfile.graphiti-service
+    image: graphiti-service:latest
+    container_name: graphiti-service
+    ports:
+      - "8080:8080"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=password
+      - CLAUDE_DOCKER_API_URL=http://claude-docker-api:8000
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      claude-docker-api:
+        condition: service_healthy
+    networks:
+      - graphiti-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+
+  # Enhanced Graphiti Commands Service
+  graphiti-commands:
+    build:
+      context: ../../tools/docker
+      dockerfile: Dockerfile.graphiti-commands
+    image: graphiti-commands:latest
+    container_name: graphiti-commands
+    ports:
+      - "8081:8081"
+    volumes:
+      - ../../tools/scripts:/app/scripts:ro
+      - ../../research/output:/app/output:rw
+    environment:
+      - PYTHONUNBUFFERED=1
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=password
+      - CLAUDE_DOCKER_API_URL=http://claude-docker-api:8000
+      - GRAPHITI_SERVICE_URL=http://graphiti-service:8080
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      claude-docker-api:
+        condition: service_healthy
+      graphiti-service:
+        condition: service_healthy
+    networks:
+      - graphiti-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Graphiti Worker Pool - Scalable processing
+  graphiti-worker:
+    build:
+      context: ../../graphiti-main/claude_docker/docker
+      dockerfile: Dockerfile.worker
+    image: graphiti-worker:latest
+    environment:
+      - PYTHONUNBUFFERED=1
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=password
+      - CLAUDE_DOCKER_API_URL=http://claude-docker-api:8000
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      claude-docker-api:
+        condition: service_healthy
+    networks:
+      - graphiti-network
+    restart: unless-stopped
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+
+  # Monitoring and Management
+  graphiti-monitor:
+    build:
+      context: ../../tools/docker
+      dockerfile: Dockerfile.monitor
+    image: graphiti-monitor:latest
+    container_name: graphiti-monitor
+    ports:
+      - "8082:8082"
+    volumes:
+      - neo4j-logs:/neo4j-logs:ro
+      - claude-logs:/claude-logs:ro
+    environment:
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=password
+    depends_on:
+      - neo4j
+      - claude-docker-api
+      - graphiti-service
+    networks:
+      - graphiti-network
+    restart: unless-stopped
+
+volumes:
+  neo4j-data:
+    driver: local
+  neo4j-logs:
+    driver: local
+  neo4j-import:
+    driver: local
+  claude-logs:
+    driver: local
+
+networks:
+  graphiti-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

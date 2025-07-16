@@ -16,16 +16,36 @@ The Islamic Text Workflow is a production-ready research platform that combines:
 ### Knowledge Graph Operations
 ```bash
 # Remember information in knowledge graph
-gr "Islamic text insights or project notes"
+gr "project insights or technical notes"
 
 # Search knowledge graph
 gs "search query for concepts or decisions" 
 
 # Analyze text files
-gt "/path/to/islamic_text.txt"
+gt "/path/to/document.txt"
 
 # Check system status
 gst  # Shows Neo4j and Claude Docker API status
+```
+
+### Slash Commands (Available in Claude Code)
+```bash
+# Core Graphiti Operations
+/gr "information to remember"     # Store in knowledge graph
+/gs "search query"                # Search knowledge graph
+/gt "file.txt"                    # Analyze text content
+/gst                             # Check system status
+
+# Project Management
+/pstart "session-name"           # Start new development session
+/poverview                       # Get project overview
+/psearch "query"                 # Search project intelligence
+/pend "summary"                  # End session with summary
+
+# Multi-Instance & Modes
+/claude2                         # Launch second Claude instance
+/graphiti-mode                   # Switch to Graphiti operations mode
+/dev-mode                        # Switch to development mode
 ```
 
 ### Project Development Tracking
@@ -263,13 +283,56 @@ For detailed implementation, troubleshooting, and advanced patterns, refer to th
 - **KNOWLEDGE GRAPH FORMAT**: `source tools/scripts/graphiti-commands.sh && graph_remember "SESSION END: [context] - [accomplishments] - [outcomes/next steps]"`
 - **FILE NAMING**: `research/output/YYYY-MM-DD_HHMMSS-session-[descriptive-title].md`
 
+## 🔄 Slash Commands Integration
+
+### Core Knowledge Graph Commands
+- **`/gr "text"`** - Store information in Graphiti knowledge graph with timestamp
+- **`/gs "query"`** - Search knowledge graph for concepts, decisions, and insights
+- **`/gt "file.txt"`** - Analyze text content and extract entities/relationships
+- **`/gst`** - Check system status of Neo4j, Claude Docker API, and Graphiti services
+
+### Project Intelligence Commands
+- **`/pstart "session-name"`** - Begin new development session with project tracking
+- **`/poverview`** - Get comprehensive project overview and recent activity
+- **`/psearch "query"`** - Search across all project sessions, decisions, and features
+- **`/pend "summary"`** - End current session with accomplishment summary
+
+### Multi-Instance & Specialized Modes
+- **`/claude2`** - Launch second Claude instance for parallel processing
+- **`/graphiti-mode`** - Switch to specialized Graphiti operations tracking
+- **`/dev-mode`** - Switch to general development tracking mode
+
+### Usage Patterns
+```bash
+# Start a new development session
+/pstart "graphiti-api-optimization"
+
+# Switch to specialized mode
+/graphiti-mode
+
+# Store insights as you work
+/gr "OPTIMIZATION: Query performance improved 40% with indexed relationships"
+
+# Search for previous work
+/gs "performance optimization"
+
+# Analyze documentation
+/gt "docs/architecture.md"
+
+# Check system health
+/gst
+
+# Get project overview
+/poverview
+```
+
 ## 💡 Pro Tips
 
-1. **Start each session with `poverview`** - See recent project activity and decisions across all contexts
-2. **Use automatic tracking** - Knowledge graph captures insights contextually as you work
-3. **Leverage `claude2`** - Launch specialized instances for Islamic research, Graphiti operations, or engineering tasks
-4. **Search before implementing** - Use `psearch` to find previous solutions across all project contexts
-5. **Trust the automation** - Focus on your work while tracking happens automatically based on context
-6. **Review with `gs`** - Search accumulated knowledge across development, research, and operational insights
+1. **Start each session with `/poverview`** - See recent project activity and decisions
+2. **Use slash commands for quick operations** - More efficient than bash commands
+3. **Leverage `/claude2`** - Launch specialized instances for parallel processing
+4. **Search before implementing** - Use `/psearch` to find previous solutions
+5. **Trust the automation** - Knowledge graph captures insights as you work
+6. **Review with `/gs`** - Search accumulated knowledge across all contexts
 
-This Islamic Text Workflow project is designed for intelligent, persistent, and collaborative work with **context-aware automatic knowledge capture**. The knowledge graph remembers everything as you work, enabling sophisticated analysis and discovery across development, Islamic text research, and system operations.
+This project integrates **Graphiti v0.17.4** with **Claude Code slash commands** for intelligent, persistent, and collaborative development with context-aware automatic knowledge capture.
