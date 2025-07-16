@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .status-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .status-card h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .status-healthy {
+            border-left: 4px solid #4caf50;
+        }
+        .status-unhealthy {
+            border-left: 4px solid #f44336;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .badge-healthy {
+            background-color: #e8f5e8;
+            color: #4caf50;
+        }
+        .badge-unhealthy {
+            background-color: #ffebee;
+            color: #f44336;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .metric-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .metric-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .refresh-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .refresh-button:hover {
+            background-color: #0056b3;
+        }
+        .timestamp {
+            color: #666;
+            font-size: 0.9em;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ title }}</h1>
+        
+        <button class="refresh-button" onclick="location.reload()">🔄 Refresh</button>
+        
+        <div class="status-grid">
+            {% for service in health_status.services %}
+            <div class="status-card {% if service.status == 'healthy' %}status-healthy{% else %}status-unhealthy{% endif %}">
+                <h3>{{ service.name }}</h3>
+                <p>
+                    <span class="status-badge {% if service.status == 'healthy' %}badge-healthy{% else %}badge-unhealthy{% endif %}">
+                        {{ service.status }}
+                    </span>
+                </p>
+                <p><strong>URL:</strong> {{ service.url }}</p>
+                {% if service.response_time %}
+                <p><strong>Response Time:</strong> {{ "%.3f"|format(service.response_time) }}s</p>
+                {% endif %}
+                <p><strong>Last Check:</strong> {{ service.last_check.strftime('%Y-%m-%d %H:%M:%S UTC') }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <h2>System Metrics</h2>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value">{{ health_status.metrics.neo4j_nodes }}</div>
+                <div class="metric-label">Neo4j Nodes</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{{ health_status.metrics.neo4j_relationships }}</div>
+                <div class="metric-label">Neo4j Relationships</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{{ health_status.metrics.claude_workers }}</div>
+                <div class="metric-label">Claude Workers</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{{ health_status.metrics.recent_episodes }}</div>
+                <div class="metric-label">Recent Episodes</div>
+            </div>
+        </div>
+        
+        <div class="timestamp">
+            Last updated: {{ health_status.timestamp.strftime('%Y-%m-%d %H:%M:%S UTC') }}
+        </div>
+    </div>
+    
+    <script>
+        // Auto-refresh every 30 seconds
+        setTimeout(function() {
+            location.reload();
+        }, 30000);
+    </script>
+</body>
+</html>

@@ -1,13 +1,16 @@
 # syntax=docker/dockerfile:1
 FROM python:3.11-slim AS base
 
-# Install only essential system dependencies
+# Install system dependencies including Neo4j client tools and Node.js
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
     bash \
     sudo \
     ca-certificates \
+    netcat-traditional \
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
 # Create non-privileged user with sudo access
@@ -21,9 +24,20 @@ RUN chown -R developer:developer /workspace
 
 USER developer
 
-# Install only essential Python tools
+# Install core Python dependencies including Graphiti
 RUN pip install --user --no-cache-dir \
-    python-dotenv
+    python-dotenv \
+    requests \
+    aiohttp \
+    fastapi \
+    uvicorn \
+    pydantic \
+    neo4j \
+    anthropic \
+    openai
+
+# Install Claude Code as core dependency
+RUN npm install -g @anthropic-ai/claude-code
 
 # Development target
 FROM base AS development

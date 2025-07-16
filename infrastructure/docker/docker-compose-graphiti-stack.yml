@@ -1,5 +1,5 @@
 # Graphiti Stack - Complete containerized setup with Neo4j, Claude Docker, and Graphiti
-# This orchestrates the full Graphiti ecosystem with proper service discovery
+# This orchestrates the full Graphiti ecosystem with proper service discovery and API key integration
 
 version: '3.8'
 
@@ -16,6 +16,8 @@ services:
       - NEO4J_PLUGINS=["apoc"]
       - NEO4J_dbms_security_procedures_unrestricted=apoc.*
       - NEO4J_dbms_security_procedures_allowlist=apoc.*
+      - NEO4J_dbms_connector_bolt_advertised__address=neo4j:7687
+      - NEO4J_dbms_connector_http_advertised__address=neo4j:7474
     volumes:
       - neo4j-data:/data
       - neo4j-logs:/logs
@@ -63,6 +65,7 @@ services:
       - NEO4J_URI=bolt://neo4j:7687
       - NEO4J_USER=neo4j
       - NEO4J_PASSWORD=password
+      - GOOGLE_API_KEY=AIzaSyBzWJ9PiFWpnJuTgotOD_-Eyrad4m7ckUo
     depends_on:
       neo4j:
         condition: service_healthy
@@ -91,7 +94,7 @@ services:
       - NEO4J_USER=neo4j
       - NEO4J_PASSWORD=password
       - CLAUDE_DOCKER_API_URL=http://claude-docker-api:8000
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GOOGLE_API_KEY=AIzaSyBzWJ9PiFWpnJuTgotOD_-Eyrad4m7ckUo
     depends_on:
       neo4j:
         condition: service_healthy
@@ -126,7 +129,9 @@ services:
       - NEO4J_PASSWORD=password
       - CLAUDE_DOCKER_API_URL=http://claude-docker-api:8000
       - GRAPHITI_SERVICE_URL=http://graphiti-service:8080
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GOOGLE_API_KEY=AIzaSyBzWJ9PiFWpnJuTgotOD_-Eyrad4m7ckUo
+      - SUPABASE_URL=https://aayvvcpxafzhcjqewwja.supabase.co
+      - SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFheXZ2Y3B4YWZ6aGNqcWV3d2phIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NjQ2Nzc1NCwiZXhwIjoyMDYyMDQzNzU0fQ.PHNLmAb0-jzy0CGl3ThVdgXZkAGTBWLxC5O-RDgp_yQ
     depends_on:
       neo4j:
         condition: service_healthy
@@ -155,7 +160,7 @@ services:
       - NEO4J_USER=neo4j
       - NEO4J_PASSWORD=password
       - CLAUDE_DOCKER_API_URL=http://claude-docker-api:8000
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GOOGLE_API_KEY=AIzaSyBzWJ9PiFWpnJuTgotOD_-Eyrad4m7ckUo
     depends_on:
       neo4j:
         condition: service_healthy
@@ -172,7 +177,28 @@ services:
         reservations:
           memory: 1G
 
-  # Monitoring and Management
+  # Supabase Integration Service
+  supabase-integration:
+    build:
+      context: ../../tools/docker
+      dockerfile: Dockerfile.supabase-integration
+    image: supabase-integration:latest
+    container_name: supabase-integration
+    ports:
+      - "8083:8083"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - SUPABASE_URL=https://aayvvcpxafzhcjqewwja.supabase.co
+      - SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFheXZ2Y3B4YWZ6aGNqcWV3d2phIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NjQ2Nzc1NCwiZXhwIjoyMDYyMDQzNzU0fQ.PHNLmAb0-jzy0CGl3ThVdgXZkAGTBWLxC5O-RDgp_yQ
+      - GRAPHITI_SERVICE_URL=http://graphiti-service:8080
+      - NEO4J_URI=bolt://neo4j:7687
+    depends_on:
+      - graphiti-service
+    networks:
+      - graphiti-network
+    restart: unless-stopped
+
+  # Monitoring and Management Dashboard
   graphiti-monitor:
     build:
       context: ../../tools/docker
@@ -188,10 +214,35 @@ services:
       - NEO4J_URI=bolt://neo4j:7687
       - NEO4J_USER=neo4j
       - NEO4J_PASSWORD=password
+      - CLAUDE_DOCKER_API_URL=http://claude-docker-api:8000
+      - GRAPHITI_SERVICE_URL=http://graphiti-service:8080
+      - GOOGLE_API_KEY=AIzaSyBzWJ9PiFWpnJuTgotOD_-Eyrad4m7ckUo
     depends_on:
       - neo4j
       - claude-docker-api
       - graphiti-service
+    networks:
+      - graphiti-network
+    restart: unless-stopped
+
+  # Enhanced Commands API Gateway
+  commands-gateway:
+    build:
+      context: ../../tools/docker
+      dockerfile: Dockerfile.commands-gateway
+    image: commands-gateway:latest
+    container_name: commands-gateway
+    ports:
+      - "8090:8090"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - GRAPHITI_SERVICE_URL=http://graphiti-service:8080
+      - CLAUDE_DOCKER_API_URL=http://claude-docker-api:8000
+      - SUPABASE_URL=https://aayvvcpxafzhcjqewwja.supabase.co
+      - SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFheXZ2Y3B4YWZ6aGNqcWV3d2phIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NjQ2Nzc1NCwiZXhwIjoyMDYyMDQzNzU0fQ.PHNLmAb0-jzy0CGl3ThVdgXZkAGTBWLxC5O-RDgp_yQ
+    depends_on:
+      - graphiti-service
+      - claude-docker-api
     networks:
       - graphiti-network
     restart: unless-stopped

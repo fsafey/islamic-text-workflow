@@ -74,14 +74,18 @@ graph_status() {
     echo "Graphiti Status:"
     echo "- Config: ~/.claude/mcp_settings.json"
     echo "- Memory: ~/.claude/graphiti_memory.txt"
-    echo "- Neo4j: bolt://localhost:7687"
+    echo "- Neo4j: bolt://neo4j:7687 (dev container)"
+    echo "- Neo4j UI: http://localhost:7474 (neo4j/password)"
     echo "- Claude Docker API: http://localhost:8000"
     
-    # Check if Neo4j is running
-    if nc -z localhost 7687 2>/dev/null; then
+    # Check if Neo4j is running (dev container)
+    if nc -z neo4j 7687 2>/dev/null; then
         echo "- Neo4j: ✓ Running"
+    elif nc -z localhost 7687 2>/dev/null; then
+        echo "- Neo4j: ✓ Running (localhost)"
     else
         echo "- Neo4j: ✗ Not running"
+        echo "  Start dev container: docker-compose up -d"
     fi
     
     # Check if Claude Docker API is running

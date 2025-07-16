@@ -30,12 +30,49 @@ if [ -f /workspace/tools/scripts/graphiti-commands.sh ]; then
     source /workspace/tools/scripts/graphiti-commands.sh
 fi
 
-# Helper function for seamless Graphiti setup
+# Auto-configure Graphiti with Neo4j
+auto_setup_graphiti() {
+    echo "🧠 Auto-configuring Graphiti with Neo4j..."
+    
+    # Wait for Neo4j to be ready
+    echo "⏳ Waiting for Neo4j to be ready..."
+    timeout=60
+    while [ $timeout -gt 0 ] && ! nc -z neo4j 7687; do
+        sleep 2
+        timeout=$((timeout - 2))
+    done
+    
+    if [ $timeout -le 0 ]; then
+        echo "⚠️  Neo4j not ready after 60s, but continuing..."
+    else
+        echo "✅ Neo4j is ready"
+    fi
+    
+    # Create .env file with Neo4j connection
+    cat > /workspace/.env << 'ENVEOF'
+NEO4J_URI=bolt://neo4j:7687
+NEO4J_USERNAME=neo4j
+NEO4J_PASSWORD=password
+OPENAI_API_KEY=not-needed-for-local-claude
+GRAPHITI_DATA_DIR=/workspace/graphiti-data
+ENVEOF
+    
+    # Create graphiti data directory
+    mkdir -p /workspace/graphiti-data
+    
+    echo "✅ Graphiti configured for Neo4j"
+}
+
+# Run auto-setup in background
+auto_setup_graphiti &
+
+# Helper function for manual Graphiti setup (now mostly automatic)
 setup_graphiti() {
-    echo "🧠 Setting up Graphiti for seamless integration..."
-    pkg graphiti
-    echo "✅ Graphiti dependencies installed"
-    echo "💡 Use 'gr', 'gs', 'gt', 'gst' commands for knowledge graph operations"
+    echo "🧠 Graphiti is automatically configured!"
+    echo "✅ Dependencies: Already installed in container"
+    echo "✅ Neo4j connection: Auto-configured"
+    echo "✅ Commands loaded: gr, gs, gt, gst available"
+    echo "💡 Use 'gst' to check system status"
 }
 
 # Helper function for multi-instance Claude workflow
@@ -63,21 +100,21 @@ EOF
 echo ""
 echo "🎉 Minimal Dev Container Ready!"
 echo ""
-echo "📦 Install packages as needed:"
-echo "   pkg claude           - Install Claude Code"
+echo "📦 Optional packages (install as needed):"
 echo "   pkg dev-tools        - Install vim, nano, etc."
 echo "   pkg python-dev       - Install pytest, jupyter, etc."
-echo "   pkg graphiti         - Install Graphiti dependencies"
 echo "   pkg all              - Install everything"
 echo ""
-echo "🧠 Graphiti commands automatically loaded:"
+echo "🧠 Graphiti & Neo4j Knowledge Graph (READY):"
 echo "   gr 'text'            - Remember in knowledge graph"
 echo "   gs 'query'           - Search knowledge graph"
 echo "   gt 'file.txt'        - Analyze text files"
 echo "   gst                  - Show system status"
+echo "   Neo4j UI: http://localhost:7474 (neo4j/password)"
+echo "   ✅ Auto-configured with Neo4j backend"
 echo ""
-echo "🤖 Multi-Instance Claude support:"
-echo "   claude               - Start Claude in this container"
+echo "🤖 Claude Code (READY):"
+echo "   claude               - Start Claude Code (built-in)"
 echo "   new_claude           - Show multi-instance workflow"
 echo ""
 echo "🚀 Fast startup, install only what you need!"
