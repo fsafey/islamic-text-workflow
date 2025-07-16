@@ -1,48 +1,48 @@
 # Islamic Text Workflow Dev Container
 
-## 🚀 Quick Start
+## 🚀 Minimal Fast-Startup Development Environment
 
-Your development environment is ready! Here are the key commands:
+This dev container is optimized for fast startup with on-demand package installation.
 
-### Development Commands
+### Essential Commands
 - `ws` - Go to workspace
-- `islamic-dev` - Show welcome message
-- `dev-status` - Check all services status
-- `fresh-env` - Reload environment
+- `pkg <package-set>` - Install packages as needed
 
-### Project Commands (from graphiti-commands.sh)
+### Package Installation Options
+```bash
+pkg claude           # Install Claude Code
+pkg dev-tools        # Install vim, nano, git tools
+pkg python-dev       # Install pytest, jupyter, black
+pkg graphiti         # Install Graphiti dependencies
+pkg all              # Install everything
+```
+
+### Project Commands (when tools are installed)
 - `gr "text"` - Remember in knowledge graph
-- `gs "query"` - Search knowledge graph
+- `gs "query"` - Search knowledge graph  
 - `gt "/path/file"` - Analyze text file
 - `gst` - Show system status
 
-### Claude Docker Commands
+### Claude Docker Commands (when available)
 - `claude2` - Interactive Claude instance
-- `claude-graphiti` - Graphiti worker mode
-- `claude-islamic` - Islamic NLP mode
-- `claude-engineering` - Software engineering mode
+- Uses existing Claude Docker API at http://localhost:8000
 
-### Services Available
-- **Neo4j Browser**: http://localhost:7474 (neo4j/islamictext2024)
-- **Claude Docker API**: http://localhost:8000
-- **Documentation Server**: http://localhost:8080
+### Development Philosophy
+- **Fast Startup**: Minimal base image loads quickly
+- **Install on Demand**: Only install what you need, when you need it
+- **Persistent Storage**: Installed packages persist across container rebuilds
+- **Efficient Development**: No waiting for unnecessary dependencies
 
 ### Project Structure
 - `/workspace` - Project root
 - `/workspace/graphiti-main` - Graphiti framework
-- `/workspace/claude-configs` - Claude instance configurations
 - `/workspace/documentation` - Project documentation
 - `/workspace/tools/scripts` - Development scripts
 
-### Testing
-- `test-graphiti` - Run Graphiti tests
-- `test-knowledge` - Test knowledge graph connection
+### Quick Start
+1. Container starts immediately with minimal dependencies
+2. Install needed packages: `pkg dev-tools python-dev`
+3. Load project commands: `source tools/scripts/graphiti-commands.sh`
+4. Begin development with fast, responsive environment
 
-### Development Workflow
-1. Use `claude2` for interactive development
-2. Track insights with `gr "insight"`
-3. Search knowledge with `gs "query"`
-4. Analyze texts with `gt "file.txt"`
-5. Check system with `gst`
-
-Happy coding! 🕌
+**Philosophy**: Start fast, install what you need, stay productive! 🕌

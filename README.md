@@ -95,10 +95,11 @@ islamic-text-workflow/
 
 ## 🚀 AI Coding Agent Starter Pack
 
-This is a complete starter pack for autonomous AI development. 
+This is a complete starter pack for autonomous AI development with **optimized dev container support**.
 
 ## What This Does
 - **Complete AI coding agent setup** with Claude Code in an isolated Docker container
+- **Optimized Dev Container** - Fast-startup minimal environment with on-demand package installation
 - **Pre-configured MCP servers** for maximum coding productivity:
   - **Serena** - Advanced coding agent toolkit with project indexing and symbol manipulation
   - **Context7** - Pulls up-to-date, version-specific documentation and code examples straight from the source into your prompt
@@ -107,6 +108,45 @@ This is a complete starter pack for autonomous AI development.
 - **Remote work notifications** - Get pinged via SMS when tasks finish, so you can step away from your monitor
 - **Simple one-command setup and usage** - Zero friction set up for plug and play integration with existing cc workflows.
 - **Fully customizable** - Modify the can modify the files at `~/.claude-docker` for custom slash commands, settings and claude.md files.
+
+## 🐳 Dev Container Quick Start
+
+### Option 1: VS Code Dev Container (Recommended)
+```bash
+# 1. Open in VS Code
+code .
+
+# 2. Reopen in Container (Command Palette: "Reopen in Container")
+# Container starts fast with minimal dependencies
+
+# 3. Install packages as needed
+pkg dev-tools python-dev graphiti
+
+# 4. Load project commands
+source tools/scripts/graphiti-commands.sh
+
+# 5. Begin development
+gr "Starting Islamic text research session"
+```
+
+### Option 2: Docker Compose
+```bash
+# Start dev container
+docker-compose -f .devcontainer/docker-compose.yml up -d
+
+# Attach to container
+docker exec -it islamic-text-workflow-app-1 bash
+
+# Install what you need
+pkg all
+```
+
+### Dev Container Features
+- **⚡ Fast Startup**: Minimal base image loads in seconds
+- **📦 On-Demand Installation**: `pkg claude`, `pkg dev-tools`, `pkg python-dev`, `pkg graphiti`
+- **💾 Persistent Storage**: Installed packages persist across rebuilds
+- **🔄 Efficient Development**: No waiting for unnecessary dependencies
+- **🕌 Islamic Text Workflow**: Full project functionality available
 
 ## Quick Start
 
